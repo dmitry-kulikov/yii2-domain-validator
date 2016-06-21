@@ -3,5 +3,6 @@
 // ensure we get report on all possible php errors
 error_reporting(-1);
 
-require_once(__DIR__ . '/../vendor/autoload.php');
-require_once(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
+$vendorPath = dirname(__DIR__) . '/vendor';
+require_once("$vendorPath/autoload.php");
+require_once("$vendorPath/yiisoft/yii2/Yii.php");
