@@ -2,6 +2,7 @@ language: php
 
 before_script:
     - composer self-update
+    - composer global require 'fxp/composer-asset-plugin:*'
     - composer update --no-interaction --prefer-source
 
 script:
