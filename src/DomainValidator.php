@@ -270,35 +270,32 @@ class DomainValidator extends Validator
             'messageNotString' => '{attribute} must be a string.',
             'messageTooShort' => '{attribute} should contain at least 1 character.',
         ];
-        if ($this->allowUnderscore) {
-            if ($this->enableIDN) {
-                $messages['messageInvalidCharacter'] =
-                    'Each label of {attribute} can consist of only letters, numbers, hyphens and underscores.';
-            } else {
-                $messages['messageInvalidCharacter'] =
-                    'Each label of {attribute} can consist of only latin letters, numbers, hyphens and underscores.';
-            }
-        } else {
-            if ($this->enableIDN) {
-                $messages['messageInvalidCharacter'] =
-                    'Each label of {attribute} can consist of only letters, numbers and hyphens.';
-            } else {
-                $messages['messageInvalidCharacter'] =
-                    'Each label of {attribute} can consist of only latin letters, numbers and hyphens.';
-            }
-        }
         if ($this->enableIDN) {
             $messages['messageLabelStartEnd'] =
                 'Each label of {attribute} should start and end with letter or number.' .
                 ' The rightmost label of {attribute} should start with letter.';
             $messages['messageLabelTooLong'] = 'Label of {attribute} is too long.';
             $messages['messageTooLong'] = '{attribute} is too long.';
+            if ($this->allowUnderscore) {
+                $messages['messageInvalidCharacter'] =
+                    'Each label of {attribute} can consist of only letters, numbers, hyphens and underscores.';
+            } else {
+                $messages['messageInvalidCharacter'] =
+                    'Each label of {attribute} can consist of only letters, numbers and hyphens.';
+            }
         } else {
             $messages['messageLabelStartEnd'] =
                 'Each label of {attribute} should start and end with latin letter or number.' .
                 ' The rightmost label of {attribute} should start with latin letter.';
             $messages['messageLabelTooLong'] = 'Each label of {attribute} should contain at most 63 characters.';
             $messages['messageTooLong'] = '{attribute} should contain at most 253 characters.';
+            if ($this->allowUnderscore) {
+                $messages['messageInvalidCharacter'] =
+                    'Each label of {attribute} can consist of only latin letters, numbers, hyphens and underscores.';
+            } else {
+                $messages['messageInvalidCharacter'] =
+                    'Each label of {attribute} can consist of only latin letters, numbers and hyphens.';
+            }
         }
         return $messages;
     }
