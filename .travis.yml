@@ -20,6 +20,7 @@ install:
     - |
         COVERAGE_PHP_VERSION='5.6'
         if [ $TRAVIS_PHP_VERSION = $COVERAGE_PHP_VERSION ]; then
+            pecl channel-update pecl.php.net
             pecl install runkit
         fi
 
