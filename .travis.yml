@@ -4,6 +4,7 @@ before_script:
     - composer self-update
     - composer global require 'fxp/composer-asset-plugin:*'
     - composer update --no-interaction --prefer-source
+    - pecl install runkit
 
 script:
     - vendor/bin/phpunit --coverage-clover=coverage.clover
