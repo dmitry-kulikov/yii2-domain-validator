@@ -90,6 +90,7 @@ class DomainValidatorTest extends TestCase
             'IDN, domain name with various symbols' => ['1.a-B.cф2'],
             'IDN, hot beverage' => ['☕.us'],
             'IDN, full-width characters' => ['日本語。ＪＰ'],
+            'IDN, box-drawing character' => ['ex╬ample.com'],
         ];
     }
 
@@ -113,6 +114,7 @@ class DomainValidatorTest extends TestCase
             ],
             'IDN, HTTP, hot beverage' => ['http://☕.us/index.html'],
             'IDN, HTTP, full-width characters' => ['http://日本語。ＪＰ/index.html'],
+            'IDN, HTTP, box-drawing character' => ['http://ex╬ample.com/index.html'],
         ];
     }
 
@@ -469,6 +471,9 @@ class DomainValidatorTest extends TestCase
                 'фффффффффффффффффффффффффффффффффффффффффффффффффффффффффs',
                 $messageInvalidCharacter,
             ],
+
+            'invalid url with valid domain name' => ['http//example.com/index.html', $messageInvalidCharacter],
+            'IDN, invalid url with valid domain name' => ['http//пример.com/index.html', $messageInvalidCharacter],
         ];
     }
 
