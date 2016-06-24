@@ -23,7 +23,7 @@ class DomainValidatorTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->validator = new DomainValidator;
+        $this->validator = new DomainValidator(['labelNumberMin' => 1]);
     }
 
     public static function validDomainProvider()
@@ -46,17 +46,6 @@ class DomainValidatorTest extends TestCase
             'domain name with various symbols' => ['1.a-B.c2'],
             'Punycode, mixed domain name' => ['xn--e1afmkfd.test.xn--80akhbyknj4f'],
         ];
-    }
-
-    /**
-     * @param string $value
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
-     * @dataProvider validDomainProvider
-     * @small
-     */
-    public function testValidDomain($value)
-    {
-        $this->assertTrue($this->validator->validate($value));
     }
 
     public static function validDomainInUrlProvider()
@@ -83,17 +72,6 @@ class DomainValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $value
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
-     * @dataProvider validDomainInUrlProvider
-     * @small
-     */
-    public function testValidDomainInUrl($value)
-    {
-        $this->assertTrue($this->validator->validate($value));
-    }
-
     public static function validDomainIdnProvider()
     {
         return [
@@ -110,9 +88,14 @@ class DomainValidatorTest extends TestCase
                 'испытание'
             ],
             'IDN, domain name with various symbols' => ['1.a-B.cф2'],
-            'IDN, cup' => ['☕.us'],
+            'IDN, hot beverage' => ['☕.us'],
             'IDN, full-width characters' => ['日本語。ＪＰ'],
+        ];
+    }
 
+    public static function validDomainIdnInUrlProvider()
+    {
+        return [
             'IDN, HTTP, one domain name label' => ['http://пример'],
             'IDN, HTTP, two domain name labels' => ['http://пример.испытание/index.html'],
             'IDN, FTP, domain name with trailing dot' => ['ftp://пример.испытание./img/dir/'],
@@ -128,39 +111,24 @@ class DomainValidatorTest extends TestCase
             'IDN, complex URL, domain name with various symbols' => [
                 'http://username:password@1.a-B.cф2:9090/path?a=ф&c=d#-пример',
             ],
-            'IDN, HTTP, cup' => ['http://☕.us/index.html'],
+            'IDN, HTTP, hot beverage' => ['http://☕.us/index.html'],
             'IDN, HTTP, full-width characters' => ['http://日本語。ＪＰ/index.html'],
         ];
     }
 
-    /**
-     * @param string $value
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
-     * @uses         kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @uses         kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @dataProvider validDomainIdnProvider
-     * @small
-     */
-    public function testInvalidDomainWithDisabledIdn($value)
+    public static function validDomainAllWithoutIdnProvider()
     {
-        $this->assertFalse($this->validator->validate($value));
+        return array_merge(
+            static::validDomainProvider(),
+            static::validDomainInUrlProvider()
+        );
     }
 
-    /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
-     * @small
-     */
-    public function testInvalidDomainWithDisabledIdnErrorMessage()
+    public static function validDomainAllOnlyIdnProvider()
     {
-        $value = 'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
-            'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
-            'испытание';
-        $this->assertFalse($this->validator->validate($value, $errorMessage));
-        $this->assertEquals(
-            'Each label of the input value can consist of only latin letters, numbers and hyphens.',
-            $errorMessage
+        return array_merge(
+            static::validDomainIdnProvider(),
+            static::validDomainIdnInUrlProvider()
         );
     }
 
@@ -169,7 +137,36 @@ class DomainValidatorTest extends TestCase
         return array_merge(
             static::validDomainProvider(),
             static::validDomainInUrlProvider(),
-            static::validDomainIdnProvider()
+            static::validDomainIdnProvider(),
+            static::validDomainIdnInUrlProvider()
+        );
+    }
+
+    /**
+     * @param string $value
+     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @dataProvider validDomainAllWithoutIdnProvider
+     * @small
+     */
+    public function testValidDomain($value)
+    {
+        $this->assertTrue($this->validator->validate($value));
+    }
+
+    /**
+     * @param string $value
+     * @covers       kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers       kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @dataProvider validDomainAllOnlyIdnProvider
+     * @small
+     */
+    public function testInvalidDomainWithDisabledIdn($value)
+    {
+        $this->assertFalse($this->validator->validate($value, $errorMessage));
+        $this->assertEquals(
+            'Each label of the input value can consist of only latin letters, numbers and hyphens.',
+            $errorMessage
         );
     }
 
@@ -179,16 +176,15 @@ class DomainValidatorTest extends TestCase
      * @dataProvider validDomainAllProvider
      * @small
      */
-    public function testValidIdnDomain($value)
+    public function testValidDomainWithEnabledIdn($value)
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
             return;
         }
 
-        $validator = $this->validator;
-        $validator->enableIDN = true;
-        $this->assertTrue($validator->validate($value));
+        $this->validator->enableIDN = true;
+        $this->testValidDomain($value);
     }
 
     /**
@@ -262,6 +258,7 @@ class DomainValidatorTest extends TestCase
     {
         $validator = $this->validator;
         $validator->allowUnderscore = true;
+
         $data = [
             'ex_ample.com',
             'http://username:password@ex_ample.com:9090/path?a=b&c=d#anchor',
@@ -272,6 +269,33 @@ class DomainValidatorTest extends TestCase
                 "Failed to validate \"$value\" (allowUnderscore = true)."
             );
         }
+
+        $this->assertFalse($validator->validate('a_@_a', $errorMessage));
+        if ($validator->enableIDN) {
+            $expectedErrorMessage =
+                'Each label of the input value can consist of only letters, numbers, hyphens and underscores.';
+        } else {
+            $expectedErrorMessage =
+                'Each label of the input value can consist of only latin letters, numbers, hyphens and underscores.';
+        }
+        $this->assertEquals($expectedErrorMessage, $errorMessage);
+    }
+
+    /**
+     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @small
+     */
+    public function testUnderscoreWithEnabledIdn()
+    {
+        if (!function_exists('idn_to_ascii')) {
+            $this->markTestSkipped('intl extension required.');
+            return;
+        }
+
+        $this->validator->enableIDN = true;
+        $this->testUnderscore();
     }
 
     public static function urlNotAllowedProvider()
@@ -296,6 +320,35 @@ class DomainValidatorTest extends TestCase
         $validator = $this->validator;
         $validator->allowURL = false;
         $this->assertEquals($expectedResult, $validator->validate($value));
+    }
+
+    public static function urlNotAllowedProviderWithEnabledIdn()
+    {
+        return array_merge(
+            static::urlNotAllowedProvider(),
+            static::arrayAddColumn(static::validDomainIdnProvider(), true),
+            static::arrayAddColumn(static::validDomainIdnInUrlProvider(), false)
+        );
+    }
+
+    /**
+     * @param string $value
+     * @param boolean $expectedResult
+     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @uses         kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @uses         kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @dataProvider urlNotAllowedProviderWithEnabledIdn
+     * @small
+     */
+    public function testUrlNotAllowedWithEnabledIdn($value, $expectedResult)
+    {
+        if (!function_exists('idn_to_ascii')) {
+            $this->markTestSkipped('intl extension required.');
+            return;
+        }
+
+        $this->validator->enableIDN = true;
+        $this->testUrlNotAllowed($value, $expectedResult);
     }
 
     /**
@@ -331,28 +384,8 @@ class DomainValidatorTest extends TestCase
             return;
         }
 
-        // enabling of IDN should not affect error message
         $this->validator->enableIDN = true;
         $this->testLabelNumberMin();
-    }
-
-    /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
-     * @small
-     */
-    public function testInvalidDomainIdnToAscii()
-    {
-        if (!function_exists('idn_to_ascii')) {
-            $this->markTestSkipped('intl extension required.');
-            return;
-        }
-
-        $validator = $this->validator;
-        $validator->enableIDN = true;
-        $this->assertFalse($validator->validate('a⒈com', $errorMessage));
-        $this->assertEquals('the input value contains invalid characters.', $errorMessage);
     }
 
     public static function invalidDomainProvider($testName)
@@ -422,6 +455,8 @@ class DomainValidatorTest extends TestCase
             'domain name contains two dots in a row' => ['example..com', $messageLabelTooShort],
 
             'domain name contains underscore' => ['ex_ample.com', $messageInvalidCharacter],
+            'domain name contains space' => ['ex ample.com', $messageInvalidCharacter],
+            'domain name contains disallowed character' => ['a⒈com', $messageInvalidCharacter],
 
             'IDN, domain name too long' => [
                 'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
@@ -519,7 +554,6 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * Enabling of IDN should not affect error message (for most cases).
      * @param string $value
      * @param string $expectedErrorMessage
      * @covers       kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
@@ -537,45 +571,6 @@ class DomainValidatorTest extends TestCase
 
         $this->validator->enableIDN = true;
         $this->testInvalidDomain($value, $expectedErrorMessage);
-    }
-
-    /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
-     * @small
-     */
-    public function testInvalidDomainWithAllowUnderscore()
-    {
-        $validator = $this->validator;
-        $validator->allowUnderscore = true;
-        $this->assertFalse($validator->validate('a_@_a', $errorMessage));
-        if ($validator->enableIDN) {
-            $expectedErrorMessage =
-                'Each label of the input value can consist of only letters, numbers, hyphens and underscores.';
-        } else {
-            $expectedErrorMessage =
-                'Each label of the input value can consist of only latin letters, numbers, hyphens and underscores.';
-        }
-        $this->assertEquals($expectedErrorMessage, $errorMessage);
-    }
-
-    /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
-     * @small
-     */
-    public function testInvalidDomainWithAllowUnderscoreWithEnabledIdn()
-    {
-        if (!function_exists('idn_to_ascii')) {
-            $this->markTestSkipped('intl extension required.');
-            return;
-        }
-
-        // enabling of IDN should not affect error message
-        $this->validator->enableIDN = true;
-        $this->testInvalidDomainWithAllowUnderscore();
     }
 
     /**
