@@ -54,6 +54,7 @@ class DomainValidatorTest extends TestCase
             'HTTP, one domain name label' => ['http://localhost'],
             'HTTP, two domain name labels' => ['http://example.com/index.html'],
             'FTP, domain name with trailing dot' => ['ftp://example.com./img/dir/'],
+            // todo it causes empty array in "idn_to_ascii" $idnaInfo
             'HTTPS, 127 levels, 253 characters and trailing dot' => [
                 'https://a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.' .
                 'a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.' .
@@ -101,6 +102,7 @@ class DomainValidatorTest extends TestCase
             'IDN, HTTP, two domain name labels' => ['http://пример.испытание/index.html'],
             'IDN, FTP, domain name with trailing dot' => ['ftp://пример.испытание./img/dir/'],
             'IDN, FTP, mixed domain name' => ['ftp://пример.test.испытание/img/dir/'],
+            // todo it causes empty array in "idn_to_ascii" $idnaInfo
             'IDN, HTTPS, 34 levels, 253 characters (ф. == xn--t1a.) and trailing dot' => [
                 'https://ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.s.s.s./index.html',
             ],
@@ -397,16 +399,18 @@ class DomainValidatorTest extends TestCase
                 'Each label of the input value can consist of only latin letters, numbers and hyphens.';
             $messageLabelStartEnd = 'Each label of the input value should start and end with latin letter or number.' .
                 ' The rightmost label of the input value should start with latin letter.';
+            $messageLabelTooLong = 'Each label of the input value should contain at most 63 characters.';
+            $messageTooLong = 'the input value should contain at most 253 characters.';
         } else {
             $messageInvalidCharacter =
                 'Each label of the input value can consist of only letters, numbers and hyphens.';
             $messageLabelStartEnd = 'Each label of the input value should start and end with letter or number.' .
                 ' The rightmost label of the input value should start with letter.';
+            $messageLabelTooLong = 'Label of the input value is too long.';
+            $messageTooLong = 'the input value is too long.';
         }
-        $messageLabelTooLong = 'Each label of the input value should contain at most 63 characters.';
         $messageLabelTooShort = 'Each label of the input value should contain at least 1 character.';
         $messageNotString = 'the input value must be a string.';
-        $messageTooLong = 'the input value should contain at most 253 characters.';
         $messageTooShort = 'the input value should contain at least 1 character.';
         return [
             'null' => [null, $messageNotString],
@@ -494,6 +498,7 @@ class DomainValidatorTest extends TestCase
 
     public static function invalidDomainWithEnabledIdnProvider()
     {
+        $messageInvalid = 'the input value is invalid.';
         $messageLabelStartEnd = 'Each label of the input value should start and end with letter or number.' .
             ' The rightmost label of the input value should start with letter.';
         $messageLabelTooLong = 'Label of the input value is too long.';
@@ -501,13 +506,13 @@ class DomainValidatorTest extends TestCase
         return array_merge(
             static::invalidDomainProvider('testInvalidDomainWithEnabledIdn'),
             [
-                /* todo fatal error
+                /* todo it causes fatal error
                 'IDN, domain name too long, fatal' => [
                     'ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.s.s.s.s',
                     $messageTooLong,
                 ],
                 //*/
-                /* todo fatal error
+                /* todo it causes fatal error
                 'IDN, domain name too long, fatal' => [
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
@@ -516,8 +521,6 @@ class DomainValidatorTest extends TestCase
                     $messageTooLong,
                 ],
                 //*/
-
-                'domain name too long' => [str_repeat('a.', 126) . 'aa', $messageTooLong],
 
                 'IDN, first domain name label starts with hyphen' => ['-пример.испытание', $messageLabelStartEnd],
                 'IDN, first domain name label ends with hyphen' => ['пример-.испытание', $messageLabelStartEnd],
@@ -541,8 +544,7 @@ class DomainValidatorTest extends TestCase
                     $messageLabelStartEnd,
                 ],
 
-                'domain name label too long' => [str_repeat('a', 64), $messageLabelTooLong],
-
+                // todo it causes empty array in "idn_to_ascii" $idnaInfo
                 'IDN, domain name too long' => [
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
@@ -554,6 +556,12 @@ class DomainValidatorTest extends TestCase
                     'фффффффффффффффффффффффффффффффффффффффффффффффффффффффффs',
                     $messageLabelTooLong,
                 ],
+
+                'IDN, IDNA_ERROR_HYPHEN_3_4' => ['aa--a', $messageInvalid],
+                'IDN, IDNA_ERROR_LEADING_COMBINING_MARK' => [json_decode('"\u0308c"'), $messageInvalid],
+                'IDN, IDNA_ERROR_PUNYCODE' => ['xn--0', $messageInvalid],
+                'IDN, IDNA_ERROR_INVALID_ACE_LABEL' => ['xn--a', $messageInvalid],
+                'IDN, IDNA_ERROR_BIDI' => [json_decode('"0A.\\u05D0"'), $messageInvalid],
             ]
         );
     }

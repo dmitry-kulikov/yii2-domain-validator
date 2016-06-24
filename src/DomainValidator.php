@@ -59,6 +59,12 @@ class DomainValidator extends Validator
     public $messageDNS;
 
     /**
+     * @var string user-defined error message used when domain name is invalid but
+     * reason is too complicated for explanation to end-user or details are not needed at all
+     */
+    public $messageInvalid;
+
+    /**
      * @var string user-defined error message used when domain name contains an invalid character
      */
     public $messageInvalidCharacter;
@@ -136,7 +142,8 @@ class DomainValidator extends Validator
 
         if ($this->enableIDN) {
             $idnaInfo = null;
-            $asciiValue = idn_to_ascii($value, 0, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
+            $options = IDNA_CHECK_BIDI | IDNA_CHECK_CONTEXTJ;
+            $asciiValue = idn_to_ascii($value, $options, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
             if ($asciiValue !== false) {
                 $value = $asciiValue;
             } else {
@@ -154,15 +161,17 @@ class DomainValidator extends Validator
                     $errorName = 'messageInvalidCharacter';
                 } elseif ($idnaErrors & IDNA_ERROR_LEADING_HYPHEN || $idnaErrors & IDNA_ERROR_TRAILING_HYPHEN) {
                     $errorName = 'messageLabelStartEnd';
-                } else {
+                } elseif (empty($idnaInfo)) {
                     $errorName = 'messageTooLong';
+                } else {
+                    $errorName = 'messageInvalid';
                 }
                 return $this->getErrorMessage($errorName);
             }
         }
 
         // ignore trailing dot
-        if ($value[mb_strlen($value, $this->encoding) - 1] == '.') {
+        if (mb_substr($value, -1, 1, $this->encoding) == '.') {
             $value = substr_replace($value, '', -1);
         }
 
@@ -203,10 +212,10 @@ class DomainValidator extends Validator
                 return $this->getErrorMessage('messageInvalidCharacter');
             }
 
-            if ($i == $labelsCount - 1 && !ctype_alpha($label[0]) || !ctype_alnum($label[0])) {
-                return $this->getErrorMessage('messageLabelStartEnd');
-            }
-            if (!ctype_alnum($label[$labelLength - 1])) {
+            if ($i == $labelsCount - 1 && !ctype_alpha($label[0])
+                || !ctype_alnum($label[0])
+                || !ctype_alnum($label[$labelLength - 1])
+            ) {
                 return $this->getErrorMessage('messageLabelStartEnd');
             }
         }
@@ -241,6 +250,7 @@ class DomainValidator extends Validator
     {
         $messages = [
             'messageDNS' => 'DNS record corresponding to {attribute} not found.',
+            'messageInvalid' => '{attribute} is invalid.',
             'messageLabelNumberMin' =>
                 '{attribute} should consist of at least {labelNumberMin} labels separated by ' .
                 '{dotsNumberMin, plural, one{dot} other{dots}}.',
