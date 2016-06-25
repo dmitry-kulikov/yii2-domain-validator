@@ -499,7 +499,7 @@ class DomainValidatorTest extends TestCase
 
     public static function invalidDomainWithEnabledIdnProvider()
     {
-        $messageInvalid = 'the input value is invalid.';
+        $message = 'the input value is invalid.';
         $messageLabelStartEnd = 'Each label of the input value should start and end with letter or number.' .
             ' The rightmost label of the input value should start with letter.';
         $messageLabelTooLong = 'Label of the input value is too long.';
@@ -558,11 +558,11 @@ class DomainValidatorTest extends TestCase
                     $messageLabelTooLong,
                 ],
 
-                'IDN, IDNA_ERROR_HYPHEN_3_4' => ['aa--a', $messageInvalid],
-                'IDN, IDNA_ERROR_LEADING_COMBINING_MARK' => [json_decode('"\u0308c"'), $messageInvalid],
-                'IDN, IDNA_ERROR_PUNYCODE' => ['xn--0', $messageInvalid],
-                'IDN, IDNA_ERROR_INVALID_ACE_LABEL' => ['xn--a', $messageInvalid],
-                'IDN, IDNA_ERROR_BIDI' => [json_decode('"0A.\\u05D0"'), $messageInvalid],
+                'IDN, IDNA_ERROR_HYPHEN_3_4' => ['aa--a', $message],
+                'IDN, IDNA_ERROR_LEADING_COMBINING_MARK' => [json_decode('"\u0308c"'), $message],
+                'IDN, IDNA_ERROR_PUNYCODE' => ['xn--0', $message],
+                'IDN, IDNA_ERROR_INVALID_ACE_LABEL' => ['xn--a', $message],
+                'IDN, IDNA_ERROR_BIDI' => [json_decode('"0A.\\u05D0"'), $message],
             ]
         );
     }
@@ -624,16 +624,27 @@ class DomainValidatorTest extends TestCase
     public function testValidateAttributeAndI18n()
     {
         Yii::$app->language = 'ru-RU';
-        $model = new ModelMock();
+        $model = new ModelMock(['domain' => 'example']);
         $validator = $this->validator;
-        $model->domain = 'google.com';
+
         $validator->validateAttribute($model, 'domain');
         $this->assertFalse($model->hasErrors('domain'));
-        $model->domain = '';
+
+        $validator->labelNumberMin = 2;
         $validator->validateAttribute($model, 'domain');
         $this->assertTrue($model->hasErrors('domain'));
         $this->assertEquals(
-            'Значение «Доменное имя» должно содержать минимум 1 символ.',
+            'Значение «Доменное имя» должно состоять минимум из 2 меток, разделённых точкой.',
+            $model->getFirstError('domain')
+        );
+
+        $model->clearErrors('domain');
+
+        $validator->labelNumberMin = 21;
+        $validator->validateAttribute($model, 'domain');
+        $this->assertTrue($model->hasErrors('domain'));
+        $this->assertEquals(
+            'Значение «Доменное имя» должно состоять минимум из 21 метки, разделённых точками.',
             $model->getFirstError('domain')
         );
     }

@@ -47,6 +47,11 @@ class DomainValidator extends Validator
     public $encoding;
 
     /**
+     * @var string the base path for all translated messages; specify it if you want to use custom translated messages
+     */
+    public $i18nBasePath;
+
+    /**
      * @var integer minimum number of domain name labels;
      * defaults to 2, meaning that domain name should contain at least 2 labels
      * @see messageLabelNumberMin for the customized message for domain name with too small number of labels
@@ -54,54 +59,85 @@ class DomainValidator extends Validator
     public $labelNumberMin = 2;
 
     /**
-     * @var string user-defined error message used when DNS record corresponding to domain name not found
+     * @var string user-defined error message used when DNS record corresponding to domain name not found;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageDNS;
 
     /**
      * @var string user-defined error message used when domain name is invalid but
-     * reason is too complicated for explanation to end-user or details are not needed at all
+     * reason is too complicated for explanation to end-user or details are not needed at all;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      * @see simpleErrorMessage to use this message for all possible errors
      */
-    public $messageInvalid;
+    public $message;
 
     /**
-     * @var string user-defined error message used when domain name contains an invalid character
+     * @var string user-defined error message used when domain name contains an invalid character;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageInvalidCharacter;
 
     /**
-     * @var string user-defined error message used when number of domain name labels is smaller than [[labelNumberMin]]
+     * @var string user-defined error message used when number of domain name labels is smaller than [[labelNumberMin]];
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{labelNumberMin}`: the value of [[labelNumberMin]]
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageLabelNumberMin;
 
     /**
-     * @var string user-defined error message used when domain name label starts or ends with an invalid character
+     * @var string user-defined error message used when domain name label starts or ends with an invalid character;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageLabelStartEnd;
 
     /**
-     * @var string user-defined error message used when domain name label is too long
+     * @var string user-defined error message used when domain name label is too long;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageLabelTooLong;
 
     /**
-     * @var string user-defined error message used when domain name label is too short
+     * @var string user-defined error message used when domain name label is too short;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageLabelTooShort;
 
     /**
-     * @var string user-defined error message used when domain name is not a string
+     * @var string user-defined error message used when domain name is not a string;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageNotString;
 
     /**
-     * @var string user-defined error message used when domain name is too long
+     * @var string user-defined error message used when domain name is too long;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageTooLong;
 
     /**
-     * @var string user-defined error message used when domain name is too short
+     * @var string user-defined error message used when domain name is too short;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
      */
     public $messageTooShort;
 
@@ -109,7 +145,7 @@ class DomainValidator extends Validator
      * @var boolean whether to always use simple error message;
      * defaults to false, meaning that validator should use specialized error messages for different errors,
      * it should help end-user to understand reason of error; set it to true if detailed error messages don't fit
-     * for your application then [[messageInvalid]] will be used in all cases
+     * for your application then [[message]] will be used in all cases
      */
     public $simpleErrorMessage = false;
 
@@ -127,9 +163,12 @@ class DomainValidator extends Validator
         if (!isset($this->encoding)) {
             $this->encoding = Yii::$app->charset;
         }
+        if (!isset($this->i18nBasePath)) {
+            $this->i18nBasePath = dirname(__DIR__) . '/messages';
+        }
         Yii::$app->i18n->translations['kdn/yii2/validators/domain'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => dirname(__DIR__) . '/messages',
+            'basePath' => $this->i18nBasePath,
             'fileMap' => ['kdn/yii2/validators/domain' => 'domain.php'],
         ];
     }
@@ -166,21 +205,21 @@ class DomainValidator extends Validator
                     $idnaErrors = $idnaInfo['errors'];
                 }
                 if ($idnaErrors & IDNA_ERROR_DOMAIN_NAME_TOO_LONG) {
-                    $errorName = 'messageTooLong';
+                    $errorMessageName = 'messageTooLong';
                 } elseif ($idnaErrors & IDNA_ERROR_EMPTY_LABEL) {
-                    $errorName = 'messageLabelTooShort';
+                    $errorMessageName = 'messageLabelTooShort';
                 } elseif ($idnaErrors & IDNA_ERROR_LABEL_TOO_LONG) {
-                    $errorName = 'messageLabelTooLong';
+                    $errorMessageName = 'messageLabelTooLong';
                 } elseif ($idnaErrors & IDNA_ERROR_DISALLOWED) {
-                    $errorName = 'messageInvalidCharacter';
+                    $errorMessageName = 'messageInvalidCharacter';
                 } elseif ($idnaErrors & IDNA_ERROR_LEADING_HYPHEN || $idnaErrors & IDNA_ERROR_TRAILING_HYPHEN) {
-                    $errorName = 'messageLabelStartEnd';
+                    $errorMessageName = 'messageLabelStartEnd';
                 } elseif (empty($idnaInfo)) {
-                    $errorName = 'messageTooLong';
+                    $errorMessageName = 'messageTooLong';
                 } else {
-                    $errorName = 'messageInvalid';
+                    $errorMessageName = 'message';
                 }
-                return $this->getErrorMessage($errorName);
+                return $this->getErrorMessage($errorMessageName);
             }
         }
 
@@ -199,10 +238,7 @@ class DomainValidator extends Validator
         $labelsCount = count($labels);
 
         if ($labelsCount < $this->labelNumberMin) {
-            return $this->getErrorMessage(
-                'messageLabelNumberMin',
-                ['labelNumberMin' => $this->labelNumberMin, 'dotsNumberMin' => $this->labelNumberMin - 1]
-            );
+            return $this->getErrorMessage('messageLabelNumberMin', ['labelNumberMin' => $this->labelNumberMin]);
         }
 
         for ($i = 0; $i < $labelsCount; $i++) {
@@ -250,7 +286,7 @@ class DomainValidator extends Validator
     protected function getErrorMessage($name, $params = [])
     {
         if ($this->simpleErrorMessage) {
-            $name = 'messageInvalid';
+            $name = 'message';
         }
         if (isset($this->$name)) {
             return [$this->$name, $params];
@@ -266,11 +302,11 @@ class DomainValidator extends Validator
     protected function getDefaultErrorMessages()
     {
         $messages = [
+            'message' => '{attribute} is invalid.',
             'messageDNS' => 'DNS record corresponding to {attribute} not found.',
-            'messageInvalid' => '{attribute} is invalid.',
             'messageLabelNumberMin' =>
-                '{attribute} should consist of at least {labelNumberMin} labels separated by ' .
-                '{dotsNumberMin, plural, one{dot} other{dots}}.',
+                '{attribute} should consist of at least {labelNumberMin, number} labels separated by ' .
+                '{labelNumberMin, plural, =2{dot} other{dots}}.',
             'messageLabelTooShort' => 'Each label of {attribute} should contain at least 1 character.',
             'messageNotString' => '{attribute} must be a string.',
             'messageTooShort' => '{attribute} should contain at least 1 character.',
