@@ -61,6 +61,7 @@ class DomainValidator extends Validator
     /**
      * @var string user-defined error message used when domain name is invalid but
      * reason is too complicated for explanation to end-user or details are not needed at all
+     * @see simpleErrorMessage to use this message for all possible errors
      */
     public $messageInvalid;
 
@@ -105,6 +106,14 @@ class DomainValidator extends Validator
     public $messageTooShort;
 
     /**
+     * @var boolean whether to always use simple error message;
+     * defaults to false, meaning that validator should use specialized error messages for different errors,
+     * it should help end-user to understand reason of error; set it to true if detailed error messages don't fit
+     * for your application then [[messageInvalid]] will be used in all cases
+     */
+    public $simpleErrorMessage = false;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -118,6 +127,11 @@ class DomainValidator extends Validator
         if (!isset($this->encoding)) {
             $this->encoding = Yii::$app->charset;
         }
+        Yii::$app->i18n->translations['kdn/yii2/validators/domain'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => dirname(__DIR__) . '/messages',
+            'fileMap' => ['kdn/yii2/validators/domain' => 'domain.php'],
+        ];
     }
 
     /**
@@ -235,10 +249,13 @@ class DomainValidator extends Validator
      */
     protected function getErrorMessage($name, $params = [])
     {
+        if ($this->simpleErrorMessage) {
+            $name = 'messageInvalid';
+        }
         if (isset($this->$name)) {
             return [$this->$name, $params];
         }
-        $this->$name = Yii::t('app', $this->getDefaultErrorMessages()[$name]); // todo app -> kdn-yii2
+        $this->$name = Yii::t('kdn/yii2/validators/domain', $this->getDefaultErrorMessages()[$name]);
         return [$this->$name, $params];
     }
 

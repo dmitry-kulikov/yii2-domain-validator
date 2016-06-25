@@ -4,6 +4,7 @@ namespace kdn\yii2\validators;
 
 use kdn\yii2\validators\mocks\ModelMock;
 use stdClass;
+use Yii;
 
 /**
  * Class DomainValidatorTest.
@@ -601,13 +602,28 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
+     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
      * @covers kdn\yii2\validators\DomainValidator::validateValue
-     * @uses   kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @uses   kdn\yii2\validators\DomainValidator::getErrorMessage
      * @small
      */
-    public function testValidateAttribute()
+    public function testSimpleErrorMessage()
     {
+        $validator = $this->validator;
+        $validator->simpleErrorMessage = true;
+        $this->assertFalse($validator->validate('-', $errorMessage));
+        $this->assertEquals('the input value is invalid.', $errorMessage);
+    }
+
+    /**
+     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @small
+     */
+    public function testValidateAttributeAndI18n()
+    {
+        Yii::$app->language = 'ru-RU';
         $model = new ModelMock();
         $validator = $this->validator;
         $model->domain = 'google.com';
@@ -616,6 +632,10 @@ class DomainValidatorTest extends TestCase
         $model->domain = '';
         $validator->validateAttribute($model, 'domain');
         $this->assertTrue($model->hasErrors('domain'));
+        $this->assertEquals(
+            'Значение «Доменное имя» должно содержать минимум 1 символ.',
+            $model->getFirstError('domain')
+        );
     }
 
     /**
