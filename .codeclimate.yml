@@ -12,6 +12,10 @@ engines:
         checks:
             CleanCode/ElseExpression:
                 enabled: false
+            CleanCode/StaticAccess:
+                enabled: false
 ratings:
     paths:
         - "**.php"
+exclude_paths:
+    - tests/
