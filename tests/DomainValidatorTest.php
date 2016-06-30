@@ -559,10 +559,10 @@ class DomainValidatorTest extends TestCase
                 ],
 
                 'IDN, IDNA_ERROR_HYPHEN_3_4' => ['aa--a', $message],
-                'IDN, IDNA_ERROR_LEADING_COMBINING_MARK' => [json_decode('"\u0308c"'), $message],
+                'IDN, IDNA_ERROR_LEADING_COMBINING_MARK' => [static::u('\u0308c'), $message],
                 'IDN, IDNA_ERROR_PUNYCODE' => ['xn--0', $message],
                 'IDN, IDNA_ERROR_INVALID_ACE_LABEL' => ['xn--a', $message],
-                'IDN, IDNA_ERROR_BIDI' => [json_decode('"0A.\\u05D0"'), $message],
+                'IDN, IDNA_ERROR_BIDI' => [static::u('0A.\u05D0'), $message],
             ]
         );
     }
@@ -682,5 +682,15 @@ class DomainValidatorTest extends TestCase
             },
             $array
         );
+    }
+
+    /**
+     * \u escape sequence for PHP.
+     * @param string $text
+     * @return string
+     */
+    protected static function u($text)
+    {
+        return json_decode("\"$text\"");
     }
 }

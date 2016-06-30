@@ -215,6 +215,7 @@ class DomainValidator extends Validator
                 } elseif ($idnaErrors & IDNA_ERROR_LEADING_HYPHEN || $idnaErrors & IDNA_ERROR_TRAILING_HYPHEN) {
                     $errorMessageName = 'messageLabelStartEnd';
                 } elseif (empty($idnaInfo)) {
+                    // too long domain name caused buffer overflow
                     $errorMessageName = 'messageTooLong';
                 } else {
                     $errorMessageName = 'message';
