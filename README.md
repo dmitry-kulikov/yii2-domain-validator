@@ -22,7 +22,7 @@ Domain validator for Yii 2.
 
 # Installation
 
-The preferred way to install this extension is through [composer](https://getcomposer.org).
+The preferred way to install this extension is through [Composer](https://getcomposer.org).
 
 To install, either run
 
@@ -85,7 +85,13 @@ Please view public properties in class
 to get info about all available options, they documented comprehensively. Here I will highlight only non-evident things.
 
 1) By default validator allows URL, it will try to parse URL and then validate domain name.
+Note that model attribute value itself will not be modified.
 If URL parsing fails then validator considers value as domain.
+Validator may work not perfect for invalid URLs. For example user input is `http//example.com`,
+the error message will be `Each label of the input value can consist of only letters, numbers and hyphens`,
+although it would be better to show something like `Invalid URL`.
+The problem is that if field allows both URL and bare domain name and the input value is invalid,
+then it is impossible to reliably determine what did user want `http://example.com` or `http.example.com`.
 If you don't need URLs at all, only stand-alone domain name, you can disable this behavior
 by setting `allowURL` to `false`.
 If you always need to validate domain name in URL, no stand-alone domain name,

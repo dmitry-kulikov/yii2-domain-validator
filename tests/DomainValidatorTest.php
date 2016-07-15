@@ -507,13 +507,13 @@ class DomainValidatorTest extends TestCase
         return array_merge(
             static::invalidDomainProvider('testInvalidDomainWithEnabledIdn'),
             [
-                /* todo it causes fatal error
+                /* todo it causes fatal error in PHP
                 'IDN, domain name too long, fatal' => [
                     'ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.s.s.s.s',
                     $messageTooLong,
                 ],
                 //*/
-                /* todo it causes fatal error
+                /* todo it causes fatal error in PHP
                 'IDN, domain name too long, fatal' => [
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
