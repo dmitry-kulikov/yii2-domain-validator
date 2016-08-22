@@ -8,7 +8,7 @@
 
 | Q                 | A 
 |-------------------|---
-| Validator version | 
+| Extension version | 
 | Yii version       | 
 | PHP version       | 
 | HHVM version      | 
