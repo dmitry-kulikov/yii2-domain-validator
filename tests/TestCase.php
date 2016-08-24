@@ -18,7 +18,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->mockApplication();
+        static::mockApplication();
     }
 
     /**
@@ -28,7 +28,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->destroyApplication();
+        static::destroyApplication();
     }
 
     /**
