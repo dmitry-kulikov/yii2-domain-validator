@@ -9,7 +9,7 @@ use Yii;
 /**
  * Class DomainValidatorTest.
  * @package kdn\yii2\validators
- * @covers kdn\yii2\validators\DomainValidator::init
+ * @covers \kdn\yii2\validators\DomainValidator::init
  */
 class DomainValidatorTest extends TestCase
 {
@@ -149,7 +149,7 @@ class DomainValidatorTest extends TestCase
 
     /**
      * @param string $value
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @dataProvider validDomainAllWithoutIdnProvider
      * @small
      */
@@ -160,9 +160,9 @@ class DomainValidatorTest extends TestCase
 
     /**
      * @param string $value
-     * @covers       kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers       kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @covers       \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers       \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @dataProvider validDomainAllOnlyIdnProvider
      * @small
      */
@@ -177,7 +177,7 @@ class DomainValidatorTest extends TestCase
 
     /**
      * @param string $value
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @dataProvider validDomainAllProvider
      * @small
      */
@@ -193,9 +193,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @medium
      */
     public function testDns()
@@ -220,9 +220,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @medium
      */
     public function testDnsWithEnabledIdn()
@@ -254,9 +254,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testUnderscore()
@@ -287,9 +287,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testUnderscoreWithEnabledIdn()
@@ -314,9 +314,9 @@ class DomainValidatorTest extends TestCase
     /**
      * @param string $value
      * @param boolean $expectedResult
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
-     * @uses         kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @uses         kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
+     * @uses         \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @uses         \kdn\yii2\validators\DomainValidator::getErrorMessage
      * @dataProvider urlNotAllowedProvider
      * @small
      */
@@ -339,9 +339,9 @@ class DomainValidatorTest extends TestCase
     /**
      * @param string $value
      * @param boolean $expectedResult
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
-     * @uses         kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @uses         kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
+     * @uses         \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @uses         \kdn\yii2\validators\DomainValidator::getErrorMessage
      * @dataProvider urlNotAllowedProviderWithEnabledIdn
      * @small
      */
@@ -357,9 +357,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testLabelNumberMin()
@@ -377,9 +377,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testLabelNumberMinWithEnabledIdn()
@@ -485,9 +485,9 @@ class DomainValidatorTest extends TestCase
     /**
      * @param string $value
      * @param string $expectedErrorMessage
-     * @covers       kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers       kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @covers       \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers       \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @dataProvider invalidDomainProvider
      * @small
      */
@@ -570,9 +570,9 @@ class DomainValidatorTest extends TestCase
     /**
      * @param string $value
      * @param string $expectedErrorMessage
-     * @covers       kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers       kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers       kdn\yii2\validators\DomainValidator::validateValue
+     * @covers       \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers       \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @dataProvider invalidDomainWithEnabledIdnProvider
      * @small
      */
@@ -588,8 +588,8 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testCustomErrorMessage()
@@ -602,9 +602,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testSimpleErrorMessage()
@@ -616,9 +616,9 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * @covers kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
-     * @covers kdn\yii2\validators\DomainValidator::getErrorMessage
-     * @covers kdn\yii2\validators\DomainValidator::validateValue
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
     public function testValidateAttributeAndI18n()
@@ -651,7 +651,7 @@ class DomainValidatorTest extends TestCase
 
     /**
      * Important: this test should be executed last, because it can remove function "idn_to_ascii".
-     * @covers kdn\yii2\validators\DomainValidator::init
+     * @covers \kdn\yii2\validators\DomainValidator::init
      * @expectedException \yii\base\InvalidConfigException
      * @expectedExceptionMessage In order to use IDN validation intl extension must be installed and enabled.
      * @small
