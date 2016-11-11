@@ -24,7 +24,7 @@ return [
     'Each label of {attribute} should contain at least 1 character.' => 'Каждая метка значения «{attribute}» должна содержать минимум 1 символ.',
     '{attribute} must be a string.' => 'Значение «{attribute}» должно быть строкой.',
     'Each label of {attribute} should start and end with letter or number. The rightmost label of {attribute} should start with letter.' => 'Каждая метка значения «{attribute}» должна начинаться и заканчиваться буквой или цифрой. Крайняя правая метка значения «{attribute}» должна начинаться с буквы.',
-    'Each label of {attribute} should start and end with latin letter or number. The rightmost label of {attribute} should start with latin letter.' => 'Каждая метка значения «{attribute}» должна начинаться и заканчиваться латинской буквой или цифрой. Крайняя правая метка значения «{attribute}» должна начинаться с латинсой буквы.',
+    'Each label of {attribute} should start and end with latin letter or number. The rightmost label of {attribute} should start with latin letter.' => 'Каждая метка значения «{attribute}» должна начинаться и заканчиваться латинской буквой или цифрой. Крайняя правая метка значения «{attribute}» должна начинаться с латинской буквы.',
     'Label of {attribute} is too long.' => 'Метка значения «{attribute}» слишком длинна.',
     'Each label of {attribute} should contain at most 63 characters.' => 'Каждая метка значения «{attribute}» должна содержать максимум 63 символа.',
     '{attribute} is too long.' => 'Значение «{attribute}» слишком длинно.',
