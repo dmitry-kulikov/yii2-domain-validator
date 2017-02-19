@@ -271,7 +271,7 @@ class DomainValidator extends Validator
             }
         }
 
-        if ($this->checkDNS && !checkdnsrr($value, 'ANY')) {
+        if ($this->checkDNS && !checkdnsrr("$value.", 'ANY')) {
             return $this->getErrorMessage('messageDNS');
         }
 
