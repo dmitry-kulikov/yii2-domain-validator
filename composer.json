@@ -26,6 +26,12 @@
         "phpunit/phpunit": "4.*",
         "phpunit/php-invoker": "1.*"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "suggest": {
         "ext-intl": "this extension is needed for IDN support and to run all tests, otherwise some tests will be skipped",
         "ext-runkit": "this extension is needed to run all tests, otherwise some tests will be skipped"
