@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.0.3 March 7, 2018
+-------------------
+
+- Bug #4: Fixed error for $allowUnderscore = true in PHP 7.3.
+
 1.0.2 February 19, 2017
 -----------------------
 

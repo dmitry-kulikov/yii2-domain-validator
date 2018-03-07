@@ -255,9 +255,9 @@ class DomainValidator extends Validator
             }
 
             if ($this->allowUnderscore) {
-                $pattern = '/^[a-z\d-_]+$/i';
+                $pattern = '/^[a-z\d\-_]+$/i';
             } else {
-                $pattern = '/^[a-z\d-]+$/i';
+                $pattern = '/^[a-z\d\-]+$/i';
             }
             if (!preg_match($pattern, $label)) {
                 return $this->getErrorMessage('messageInvalidCharacter');
@@ -282,7 +282,7 @@ class DomainValidator extends Validator
      * Get error message by name.
      * @param string $name error message name
      * @param array $params parameters to be inserted into the error message
-     * @return string error message.
+     * @return array error message.
      */
     protected function getErrorMessage($name, $params = [])
     {
