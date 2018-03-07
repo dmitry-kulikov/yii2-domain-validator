@@ -5,7 +5,6 @@ Domain validator for Yii 2.
 [![License](https://poser.pugx.org/kdn/yii2-domain-validator/license)](https://packagist.org/packages/kdn/yii2-domain-validator)
 [![Latest Stable Version](https://poser.pugx.org/kdn/yii2-domain-validator/v/stable)](https://packagist.org/packages/kdn/yii2-domain-validator)
 [![Build Status](https://travis-ci.org/dmitry-kulikov/yii2-domain-validator.svg?branch=master)](https://travis-ci.org/dmitry-kulikov/yii2-domain-validator)
-[![Dependency Status](https://www.versioneye.com/user/projects/57bdee25939fc60037ebc948/badge.svg)](https://www.versioneye.com/user/projects/57bdee25939fc60037ebc948)
 [![Tested PHP Versions](https://php-eye.com/badge/kdn/yii2-domain-validator/tested.svg?branch=master)](https://php-eye.com/package/kdn/yii2-domain-validator)
 [![Code Coverage](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/?branch=master)
