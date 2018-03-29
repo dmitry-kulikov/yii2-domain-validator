@@ -650,7 +650,7 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * Important: this test should be executed last, because it can remove function "idn_to_ascii".
+     * IMPORTANT: this test should be executed last, because it can remove function "idn_to_ascii".
      * @covers \kdn\yii2\validators\DomainValidator::init
      * @expectedException \yii\base\InvalidConfigException
      * @expectedExceptionMessage In order to use IDN validation intl extension must be installed and enabled.
