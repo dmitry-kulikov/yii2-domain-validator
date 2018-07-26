@@ -19,7 +19,7 @@ class DomainValidatorTest extends TestCase
     protected $validator;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function setUp()
     {

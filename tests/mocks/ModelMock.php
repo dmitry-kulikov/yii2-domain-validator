@@ -14,7 +14,7 @@ class ModelMock extends Model
     public $domain;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {

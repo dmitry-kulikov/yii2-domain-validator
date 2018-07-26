@@ -150,7 +150,7 @@ class DomainValidator extends Validator
     public $simpleErrorMessage = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -174,7 +174,7 @@ class DomainValidator extends Validator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function validateValue($value)
     {
