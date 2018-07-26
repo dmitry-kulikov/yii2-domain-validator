@@ -313,7 +313,7 @@ class DomainValidatorTest extends TestCase
 
     /**
      * @param string $value
-     * @param boolean $expectedResult
+     * @param bool $expectedResult
      * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @uses         \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
      * @uses         \kdn\yii2\validators\DomainValidator::getErrorMessage
@@ -338,7 +338,7 @@ class DomainValidatorTest extends TestCase
 
     /**
      * @param string $value
-     * @param boolean $expectedResult
+     * @param bool $expectedResult
      * @covers       \kdn\yii2\validators\DomainValidator::validateValue
      * @uses         \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
      * @uses         \kdn\yii2\validators\DomainValidator::getErrorMessage

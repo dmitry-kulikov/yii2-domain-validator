@@ -13,19 +13,19 @@ use yii\validators\Validator;
 class DomainValidator extends Validator
 {
     /**
-     * @var boolean whether to allow underscores in domain name;
+     * @var bool whether to allow underscores in domain name;
      * defaults to false
      */
     public $allowUnderscore = false;
 
     /**
-     * @var boolean whether to allow URL address along with domain name;
+     * @var bool whether to allow URL address along with domain name;
      * defaults to true, meaning that validator should try to parse URL address and then validate domain name
      */
     public $allowURL = true;
 
     /**
-     * @var boolean whether to check whether domain name exists;
+     * @var bool whether to check whether domain name exists;
      * be aware that this check can fail due to temporary DNS problems even if domain name exists;
      * do not use it to check domain name availability;
      * defaults to false
@@ -33,7 +33,7 @@ class DomainValidator extends Validator
     public $checkDNS = false;
 
     /**
-     * @var boolean whether validation process should take into account IDN (internationalized domain names);
+     * @var bool whether validation process should take into account IDN (internationalized domain names);
      * defaults to false, meaning that validation of domain names containing IDN will always fail;
      * note that in order to use IDN validation you have to install and enable `intl` PHP extension,
      * otherwise an exception would be thrown
@@ -52,7 +52,7 @@ class DomainValidator extends Validator
     public $i18nBasePath;
 
     /**
-     * @var integer minimum number of domain name labels;
+     * @var int minimum number of domain name labels;
      * defaults to 2, meaning that domain name should contain at least 2 labels
      * @see messageLabelNumberMin for the customized message for domain name with too small number of labels
      */
@@ -142,7 +142,7 @@ class DomainValidator extends Validator
     public $messageTooShort;
 
     /**
-     * @var boolean whether to always use simple error message;
+     * @var bool whether to always use simple error message;
      * defaults to false, meaning that validator should use specialized error messages for different errors,
      * it should help end-user to understand reason of error; set it to true if detailed error messages don't fit
      * for your application then [[message]] will be used in all cases
