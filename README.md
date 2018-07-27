@@ -57,12 +57,12 @@ class YourCustomModel extends Model
     public function rules()
     {
         return [
-            ['domain', DomainValidator::className()],
+            ['domain', DomainValidator::class],
             /*
             or with custom options: enable IDN and forbid URLs
             [
                 'domain',
-                DomainValidator::className(),
+                DomainValidator::class,
                 'enableIDN' => true,
                 'allowURL' => false,
             ],
@@ -100,7 +100,7 @@ then you should add URL validator before domain name validator:
     {
         return [
             ['domain', 'url'],
-            ['domain', DomainValidator::className()],
+            ['domain', DomainValidator::class],
         ];
     }
     ```
