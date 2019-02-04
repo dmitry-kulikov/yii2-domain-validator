@@ -109,5 +109,5 @@ It is not standard requirement for domain name, standard states that domain name
 I added this restriction for practical reasons, you can disable it or require even more domain name labels
 using option `labelNumberMin`.
 1. Client side validation not implemented and I have not such plans.
-Please consider [AJAX validation](http://www.yiiframework.com/doc-2.0/guide-input-validation.html#ajax-validation)
+Please consider [AJAX validation](https://www.yiiframework.com/doc/guide/2.0/en/input-validation#ajax-validation)
 if you want to bring domain validation on client side.
