@@ -272,10 +272,11 @@ class DomainValidator extends Validator
         }
 
         if ($this->checkDNS) {
-            $dnsRecords = dns_get_record("$value.", DNS_ANY);
             if (is_callable($this->checkDNS)) {
-                return call_user_func($this->checkDNS, $dnsRecords, $value);
-            } elseif (empty($dnsRecords)) {
+                return call_user_func($this->checkDNS, $value);
+            }
+
+            if (!checkdnsrr("$value.", 'ANY')) {
                 return $this->getErrorMessage('messageDNS');
             }
         }

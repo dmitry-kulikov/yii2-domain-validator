@@ -232,8 +232,8 @@ class DomainValidatorTest extends TestCase
         $validator = $this->validator;
         $nonExistingDomain = 'non-existing-subdomain.example.com';
         $this->assertTrue($validator->validate($nonExistingDomain));
-        $validator->checkDNS = function ($dnsRecords, $value) use ($nonExistingDomain, $expectedErrorMessage) {
-            if (empty($dnsRecords)) {
+        $validator->checkDNS = function ($value) use ($nonExistingDomain, $expectedErrorMessage) {
+            if (!checkdnsrr("$value.", 'ANY')) {
                 $this->assertEquals($nonExistingDomain, $value);
 
                 return [$expectedErrorMessage, []];
