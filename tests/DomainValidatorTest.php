@@ -225,6 +225,43 @@ class DomainValidatorTest extends TestCase
      * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @medium
      */
+    public function testDnsCallable()
+    {
+        $expectedErrorMessage = 'DNS record corresponding to the input value not found.';
+
+        $validator = $this->validator;
+        $nonExistingDomain = 'non-existing-subdomain.example.com';
+        $this->assertTrue($validator->validate($nonExistingDomain));
+        $validator->checkDNS = function ($dnsRecords, $value) use ($nonExistingDomain, $expectedErrorMessage) {
+            if (empty($dnsRecords)) {
+                $this->assertEquals($nonExistingDomain, $value);
+
+                return [$expectedErrorMessage, []];
+            }
+
+            return null;
+        };
+        $this->assertFalse($validator->validate($nonExistingDomain, $errorMessage));
+        $this->assertEquals('DNS record corresponding to the input value not found.', $errorMessage);
+
+        $data = [
+            'google.com',
+            'http://username:password@google.com:9090/path?a=b&c=d#anchor',
+        ];
+        foreach ($data as $value) {
+            $this->assertTrue(
+                $validator->validate($value),
+                "Failed to validate \"$value\" (checkDNS = true)."
+            );
+        }
+    }
+
+    /**
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
+     * @medium
+     */
     public function testDnsWithEnabledIdn()
     {
         if (!function_exists('idn_to_ascii')) {

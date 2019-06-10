@@ -25,7 +25,7 @@ class DomainValidator extends Validator
     public $allowURL = true;
 
     /**
-     * @var bool whether to check whether domain name exists;
+     * @var bool|callable whether to check whether domain name exists;
      * be aware that this check can fail due to temporary DNS problems even if domain name exists;
      * do not use it to check domain name availability;
      * defaults to false
@@ -271,8 +271,13 @@ class DomainValidator extends Validator
             }
         }
 
-        if ($this->checkDNS && !checkdnsrr("$value.", 'ANY')) {
-            return $this->getErrorMessage('messageDNS');
+        if ($this->checkDNS) {
+            $dnsRecords = dns_get_record("$value.", DNS_ANY);
+            if (is_callable($this->checkDNS)) {
+                return call_user_func($this->checkDNS, $dnsRecords, $value);
+            } elseif (empty($dnsRecords)) {
+                return $this->getErrorMessage('messageDNS');
+            }
         }
 
         return null;
