@@ -306,12 +306,12 @@ class DomainValidator extends Validator
     protected function checkDNS($value)
     {
         $value = "$value.";
-        if (checkdnsrr($value, 'ANY')) {
-            $records = dns_get_record($value, DNS_ANY);
-            return !empty($records);
+        if (!checkdnsrr($value, 'ANY')) {
+            return false;
         }
 
-        return false;
+        $records = dns_get_record($value, DNS_ANY);
+        return !empty($records);
     }
 
     /**
