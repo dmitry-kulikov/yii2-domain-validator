@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.1.0 June 11, 2019
+-------------------
+
+- Enh #5: Added the ability to extend the verification of DNS (maranqz).
+- Bug: Fixed `kdn\yii2\validators\DomainValidator::$checkDNS` tells that every domain is correct on Alpine Linux.
+
 1.0.3 March 7, 2018
 -------------------
 
