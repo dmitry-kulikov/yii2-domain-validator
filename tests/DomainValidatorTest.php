@@ -658,8 +658,32 @@ class DomainValidatorTest extends TestCase
      * @covers \kdn\yii2\validators\DomainValidator::validateValue
      * @small
      */
+    public function testValidateAttribute()
+    {
+        $model = new ModelMock(['domain' => 'example']);
+        $validator = $this->validator;
+
+        $validator->validateAttribute($model, 'domain');
+        $this->assertFalse($model->hasErrors('domain'));
+
+        $validator->labelNumberMin = 2;
+        $validator->validateAttribute($model, 'domain');
+        $this->assertTrue($model->hasErrors('domain'));
+    }
+
+    /**
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
+     * @small
+     */
     public function testValidateAttributeAndI18n()
     {
+        if (!function_exists('idn_to_ascii')) {
+            $this->markTestSkipped('intl extension required.');
+            return;
+        }
+
         Yii::$app->language = 'ru-RU';
         $model = new ModelMock(['domain' => 'example']);
         $validator = $this->validator;
