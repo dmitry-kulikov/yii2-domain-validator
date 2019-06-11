@@ -34,7 +34,7 @@ class DomainValidator extends Validator
      * function (string $domain) {
      *     $records = @dns_get_record("$domain.", DNS_MX); // @ is just for simplicity of example, avoid to use it
      *     if (empty($records)) {
-     *         return ['Cannot find Mail Exchanger record for "{value}".', ['value' => Html::encode($domain)]];
+     *         return ['Cannot find Mail Exchanger record for "{value}".', ['value' => $domain]];
      *     }
      *
      *     return null; // the data is valid
