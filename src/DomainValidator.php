@@ -28,7 +28,20 @@ class DomainValidator extends Validator
      * @var bool|callable whether to check whether domain name exists;
      * be aware that this check can fail due to temporary DNS problems even if domain name exists;
      * do not use it to check domain name availability;
-     * defaults to false
+     * defaults to false;
+     * this field can be specified as a PHP callback, for example:
+     * ```php
+     * function (string $domain) {
+     *     $records = @dns_get_record("$domain.", DNS_MX); // @ is just for simplicity of example, avoid to use it
+     *     if (empty($records)) {
+     *         return ['Cannot find Mail Exchanger record for "{value}".', ['value' => Html::encode($domain)]];
+     *     }
+     *
+     *     return null; // the data is valid
+     * }
+     * ```
+     * note that alternatively you can override method `checkDNS`
+     * @see checkDNS
      */
     public $checkDNS = false;
 
@@ -68,13 +81,13 @@ class DomainValidator extends Validator
      */
     public $message;
 
-	/**
-	 * @var string user-defined error message used when DNS record corresponding to domain name not found;
-	 * you may use the following placeholders in the message:
-	 * - `{attribute}`: the label of the attribute being validated
-	 * - `{value}`: the value of the attribute being validated
-	 */
-	public $messageDNS;
+    /**
+     * @var string user-defined error message used when DNS record corresponding to domain name not found;
+     * you may use the following placeholders in the message:
+     * - `{attribute}`: the label of the attribute being validated
+     * - `{value}`: the value of the attribute being validated
+     */
+    public $messageDNS;
 
     /**
      * @var string user-defined error message used when domain name contains an invalid character;
@@ -276,12 +289,29 @@ class DomainValidator extends Validator
                 return call_user_func($this->checkDNS, $value);
             }
 
-            if (!checkdnsrr("$value.", 'ANY')) {
+            if (!$this->checkDNS($value)) {
                 return $this->getErrorMessage('messageDNS');
             }
         }
 
         return null;
+    }
+
+    /**
+     * Check whether domain name exists.
+     * @param string $value domain name
+     * @return bool whether domain name exists.
+     * @see https://github.com/yiisoft/yii2/issues/17083
+     */
+    protected function checkDNS($value)
+    {
+        $value = "$value.";
+        if (checkdnsrr($value, 'ANY')) {
+            $records = dns_get_record($value, DNS_ANY);
+            return !empty($records);
+        }
+
+        return false;
     }
 
     /**

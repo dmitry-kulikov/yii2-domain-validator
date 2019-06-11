@@ -231,7 +231,7 @@ class DomainValidatorTest extends TestCase
         $this->assertTrue($validator->validate($nonExistingDomain));
         $customErrorMessage = 'test';
         $validator->checkDNS = function ($value) use ($nonExistingDomain, $customErrorMessage) {
-            $records = @dns_get_record("$value.", DNS_MX);
+            $records = @dns_get_record("$value.", DNS_MX); // @ is just for simplicity of test, avoid to use it
             if (empty($records)) {
                 $this->assertEquals($nonExistingDomain, $value);
 
