@@ -1,6 +1,6 @@
 # These instructions allow to create Docker image to run tests for various versions of PHP.
 
-ARG PHP_VERSION
+ARG PHP_VERSION=5.6
 FROM php:${PHP_VERSION}-cli
 
 # install PHP extensions intl and xdebug
