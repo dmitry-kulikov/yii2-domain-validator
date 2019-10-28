@@ -23,7 +23,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Clean up after test.
-     * By default the application created with [[mockApplication]] will be destroyed.
+     * By default the application created with `mockApplication` will be destroyed.
      */
     protected function tearDown()
     {

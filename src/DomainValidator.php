@@ -55,7 +55,7 @@ class DomainValidator extends Validator
 
     /**
      * @var string the encoding of the string value to be validated (e.g. 'UTF-8');
-     * if this property is not set, [[\yii\base\Application::charset]] will be used
+     * if this property is not set, `\yii\base\Application::charset` will be used
      */
     public $encoding;
 
@@ -98,10 +98,10 @@ class DomainValidator extends Validator
     public $messageInvalidCharacter;
 
     /**
-     * @var string user-defined error message used when number of domain name labels is smaller than [[labelNumberMin]];
+     * @var string user-defined error message used when number of domain name labels is smaller than `labelNumberMin`;
      * you may use the following placeholders in the message:
      * - `{attribute}`: the label of the attribute being validated
-     * - `{labelNumberMin}`: the value of [[labelNumberMin]]
+     * - `{labelNumberMin}`: the value of `labelNumberMin`
      * - `{value}`: the value of the attribute being validated
      */
     public $messageLabelNumberMin;
@@ -158,7 +158,7 @@ class DomainValidator extends Validator
      * @var bool whether to always use simple error message;
      * defaults to false, meaning that validator should use specialized error messages for different errors,
      * it should help end-user to understand reason of error; set it to true if detailed error messages don't fit
-     * for your application then [[message]] will be used in all cases
+     * for your application then `message` will be used in all cases
      */
     public $simpleErrorMessage = false;
 
