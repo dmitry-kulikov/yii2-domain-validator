@@ -11,7 +11,7 @@ Domain validator for Yii 2.
 
 # Requirements
 
-- PHP 5.4 or later or HHVM;
+- PHP 5.4 or later or HHVM 3;
 - Yii framework 2;
 - PHP extensions:
   - `ctype` (character type checking) extension (required);
