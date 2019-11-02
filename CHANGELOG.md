@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.1.1 November 2, 2019
+----------------------
+
+- Bug: checkDNS = true leads to ErrorException for some bad domains on Alpine Linux.
+
 1.1.0 June 11, 2019
 -------------------
 

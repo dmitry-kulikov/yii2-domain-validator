@@ -3,6 +3,7 @@
 namespace kdn\yii2\validators;
 
 use Yii;
+use yii\base\ErrorException;
 use yii\base\InvalidConfigException;
 use yii\validators\Validator;
 
@@ -299,18 +300,25 @@ class DomainValidator extends Validator
 
     /**
      * Check whether domain name exists.
-     * @param string $value domain name
+     * @param string $domain domain name
      * @return bool whether domain name exists.
      * @see https://github.com/yiisoft/yii2/issues/17083
+     * @see https://github.com/yiisoft/yii2/issues/17602
      */
-    protected function checkDNS($value)
+    protected function checkDNS($domain)
     {
-        $value = "$value.";
-        if (!checkdnsrr($value, 'ANY')) {
+        $normalizedDomain = "$domain.";
+        if (!checkdnsrr($normalizedDomain, 'ANY')) {
             return false;
         }
 
-        $records = dns_get_record($value, DNS_ANY);
+        try {
+            // dns_get_record can return false and emit Warning that may or may not be converted to ErrorException
+            $records = dns_get_record($normalizedDomain, DNS_ANY);
+        } catch (ErrorException $e) {
+            return false;
+        }
+
         return !empty($records);
     }
 

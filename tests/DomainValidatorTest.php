@@ -13,6 +13,8 @@ use Yii;
  */
 class DomainValidatorTest extends TestCase
 {
+    const NONEXISTENT_DOMAIN = 'nonexistent-subdomain.example.com';
+
     /**
      * @var DomainValidator
      */
@@ -197,15 +199,15 @@ class DomainValidatorTest extends TestCase
      * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
      * @covers \kdn\yii2\validators\DomainValidator::checkDNS
      * @covers \kdn\yii2\validators\DomainValidator::validateValue
-     * @medium
+     * @large
      */
     public function testDns()
     {
         $validator = $this->validator;
-        $nonExistingDomain = 'non-existing-subdomain.example.com';
-        $this->assertTrue($validator->validate($nonExistingDomain));
+        $nonexistentDomain = static::NONEXISTENT_DOMAIN;
+        $this->assertTrue($validator->validate($nonexistentDomain));
         $validator->checkDNS = true;
-        $this->assertFalse($validator->validate($nonExistingDomain, $errorMessage));
+        $this->assertFalse($validator->validate($nonexistentDomain, $errorMessage));
         $this->assertEquals('DNS record corresponding to the input value not found.', $errorMessage);
 
         $data = [
@@ -222,25 +224,25 @@ class DomainValidatorTest extends TestCase
 
     /**
      * @covers \kdn\yii2\validators\DomainValidator::validateValue
-     * @medium
+     * @large
      */
     public function testDnsCallable()
     {
         $validator = $this->validator;
-        $nonExistingDomain = 'non-existing-subdomain.example.com';
-        $this->assertTrue($validator->validate($nonExistingDomain));
+        $nonexistentDomain = static::NONEXISTENT_DOMAIN;
+        $this->assertTrue($validator->validate($nonexistentDomain));
         $customErrorMessage = 'test';
-        $validator->checkDNS = function ($value) use ($nonExistingDomain, $customErrorMessage) {
+        $validator->checkDNS = function ($value) use ($nonexistentDomain, $customErrorMessage) {
             $records = @dns_get_record("$value.", DNS_MX); // @ is just for simplicity of test, avoid to use it
             if (empty($records)) {
-                $this->assertEquals($nonExistingDomain, $value);
+                $this->assertEquals($nonexistentDomain, $value);
 
                 return [$customErrorMessage, []];
             }
 
             return null;
         };
-        $this->assertFalse($validator->validate($nonExistingDomain, $errorMessage));
+        $this->assertFalse($validator->validate($nonexistentDomain, $errorMessage));
         $this->assertEquals($customErrorMessage, $errorMessage);
 
         $data = [
@@ -250,7 +252,7 @@ class DomainValidatorTest extends TestCase
         foreach ($data as $value) {
             $this->assertTrue(
                 $validator->validate($value),
-                "Failed to validate \"$value\" (checkDNS = true)."
+                "Failed to validate \"$value\" (checkDNS is callable)."
             );
         }
     }
@@ -260,7 +262,7 @@ class DomainValidatorTest extends TestCase
      * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
      * @covers \kdn\yii2\validators\DomainValidator::checkDNS
      * @covers \kdn\yii2\validators\DomainValidator::validateValue
-     * @medium
+     * @large
      */
     public function testDnsWithEnabledIdn()
     {
@@ -273,7 +275,7 @@ class DomainValidatorTest extends TestCase
         $validator->checkDNS = true;
         // enabling of IDN should not affect error message
         $validator->enableIDN = true;
-        $this->assertFalse($validator->validate('non-existing-subdomain.example.com', $errorMessage));
+        $this->assertFalse($validator->validate(static::NONEXISTENT_DOMAIN, $errorMessage));
         $this->assertEquals('DNS record corresponding to the input value not found.', $errorMessage);
 
         $data = [
@@ -711,7 +713,7 @@ class DomainValidatorTest extends TestCase
     }
 
     /**
-     * IMPORTANT: this test should be executed last, because it can remove function "idn_to_ascii".
+     * IMPORTANT: this test should be executed after others, because it can remove function "idn_to_ascii".
      * @covers \kdn\yii2\validators\DomainValidator::init
      * @expectedException \yii\base\InvalidConfigException
      * @expectedExceptionMessage In order to use IDN validation intl extension must be installed and enabled.
@@ -726,6 +728,33 @@ class DomainValidatorTest extends TestCase
 
         runkit_function_remove('idn_to_ascii');
         new DomainValidator(['enableIDN' => true]);
+    }
+
+    /**
+     * IMPORTANT: this test should be executed after others, because it can replace function "dns_get_record".
+     * @covers \kdn\yii2\validators\DomainValidator::checkDNS
+     * @covers \kdn\yii2\validators\DomainValidator::getDefaultErrorMessages
+     * @covers \kdn\yii2\validators\DomainValidator::getErrorMessage
+     * @covers \kdn\yii2\validators\DomainValidator::validateValue
+     * @small
+     */
+    public function testDnsWarning()
+    {
+        if (!function_exists('runkit_function_redefine') || !ini_get('runkit.internal_override')) {
+            $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
+            return;
+        }
+
+        // redefine dns_get_record to emit PHP Warning, which will be converted by Yii to yii\base\ErrorException
+        if (!runkit_function_redefine('dns_get_record', '', 'return 1 / 0;')) {
+            $this->markTestSkipped('Cannot redefine function "dns_get_record".');
+            return;
+        }
+
+        $validator = $this->validator;
+        $validator->checkDNS = true;
+        $this->assertFalse($validator->validate('google.com', $errorMessage));
+        $this->assertEquals('DNS record corresponding to the input value not found.', $errorMessage);
     }
 
     /**
