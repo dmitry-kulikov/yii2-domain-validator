@@ -67,4 +67,31 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     {
         Yii::$app = null;
     }
+
+    /**
+     * Add column to array.
+     * @param array $array
+     * @param mixed $value
+     * @return array
+     */
+    protected static function arrayAddColumn($array, $value)
+    {
+        return array_map(
+            function ($data) use ($value) {
+                $data[] = $value;
+                return $data;
+            },
+            $array
+        );
+    }
+
+    /**
+     * \u escape sequence for PHP.
+     * @param string $text
+     * @return string
+     */
+    protected static function u($text)
+    {
+        return json_decode("\"$text\"");
+    }
 }

@@ -756,31 +756,4 @@ class DomainValidatorTest extends TestCase
         $this->assertFalse($validator->validate('google.com', $errorMessage));
         $this->assertEquals('DNS record corresponding to the input value not found.', $errorMessage);
     }
-
-    /**
-     * Add column to array.
-     * @param array $array
-     * @param mixed $value
-     * @return array
-     */
-    protected static function arrayAddColumn($array, $value)
-    {
-        return array_map(
-            function ($data) use ($value) {
-                $data[] = $value;
-                return $data;
-            },
-            $array
-        );
-    }
-
-    /**
-     * \u escape sequence for PHP.
-     * @param string $text
-     * @return string
-     */
-    protected static function u($text)
-    {
-        return json_decode("\"$text\"");
-    }
 }
