@@ -4,6 +4,8 @@ x-composer-suffix-5-6: &composer-suffix-5-6
   COMPOSER_SUFFIX: '5.6'
 x-composer-suffix-7-2: &composer-suffix-7-2
   COMPOSER_SUFFIX: '7.2'
+x-composer-suffix-7-4: &composer-suffix-7-4
+  COMPOSER_SUFFIX: '7.4'
 
 x-context: &context
   context: .
@@ -67,13 +69,42 @@ services:
       - *volume-source
       - coverage-7.2-alpine:/usr/src/yii2-domain-validator/coverage
       - vendor-7.2-alpine:/usr/src/yii2-domain-validator/vendor
+  '7.4':
+    <<: *defaults
+    build:
+      <<: *context
+      args:
+        <<: *composer-suffix-7-4
+        <<: *github-oauth-token
+        PHP_VERSION: '7.4-cli'
+    volumes:
+      - *volume-source
+      - coverage-7.4:/usr/src/yii2-domain-validator/coverage
+      - vendor-7.4:/usr/src/yii2-domain-validator/vendor
+  '7.4-alpine':
+    <<: *defaults
+    build:
+      <<: *context
+      args:
+        <<: *composer-suffix-7-4
+        <<: *github-oauth-token
+        PHP_VERSION: '7.4-cli-alpine'
+      dockerfile: Dockerfile-alpine
+    volumes:
+      - *volume-source
+      - coverage-7.4-alpine:/usr/src/yii2-domain-validator/coverage
+      - vendor-7.4-alpine:/usr/src/yii2-domain-validator/vendor
 
 volumes:
   coverage-5.6:
   coverage-5.6-alpine:
   coverage-7.2:
   coverage-7.2-alpine:
+  coverage-7.4:
+  coverage-7.4-alpine:
   vendor-5.6:
   vendor-5.6-alpine:
   vendor-7.2:
   vendor-7.2-alpine:
+  vendor-7.4:
+  vendor-7.4-alpine:
