@@ -458,7 +458,7 @@ class DomainValidatorTest extends TestCase
             'integer' => [1, $messageNotString],
             'float' => [1.2, $messageNotString],
             'array' => [[], $messageNotString],
-            'object' => [new stdClass, $messageNotString],
+            'object' => [new stdClass(), $messageNotString],
 
             'domain name too long' => [str_repeat('a.', 126) . 'aa', $messageTooLong],
 
