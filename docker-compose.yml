@@ -1,0 +1,79 @@
+version: '3.7'
+
+x-composer-suffix-5-6: &composer-suffix-5-6
+  COMPOSER_SUFFIX: '5.6'
+x-composer-suffix-7-2: &composer-suffix-7-2
+  COMPOSER_SUFFIX: '7.2'
+
+x-context: &context
+  context: .
+
+x-defaults: &defaults
+  tty: true
+
+x-github-oauth-token: &github-oauth-token
+  GITHUB_OAUTH_TOKEN: ${GITHUB_OAUTH_TOKEN}
+
+x-volume-source: &volume-source .:/usr/src/yii2-domain-validator
+
+services:
+  '5.6':
+    <<: *defaults
+    build:
+      <<: *context
+      args:
+        <<: *composer-suffix-5-6
+        <<: *github-oauth-token
+        PHP_VERSION: '5.6-cli'
+    volumes:
+      - *volume-source
+      - coverage-5.6:/usr/src/yii2-domain-validator/coverage
+      - vendor-5.6:/usr/src/yii2-domain-validator/vendor
+  '5.6-alpine':
+    <<: *defaults
+    build:
+      <<: *context
+      args:
+        <<: *composer-suffix-5-6
+        <<: *github-oauth-token
+        PHP_VERSION: '5.6-cli-alpine'
+      dockerfile: Dockerfile-alpine
+    volumes:
+      - *volume-source
+      - coverage-5.6-alpine:/usr/src/yii2-domain-validator/coverage
+      - vendor-5.6-alpine:/usr/src/yii2-domain-validator/vendor
+  '7.2':
+    <<: *defaults
+    build:
+      <<: *context
+      args:
+        <<: *composer-suffix-7-2
+        <<: *github-oauth-token
+        PHP_VERSION: '7.2-cli'
+    volumes:
+      - *volume-source
+      - coverage-7.2:/usr/src/yii2-domain-validator/coverage
+      - vendor-7.2:/usr/src/yii2-domain-validator/vendor
+  '7.2-alpine':
+    <<: *defaults
+    build:
+      <<: *context
+      args:
+        <<: *composer-suffix-7-2
+        <<: *github-oauth-token
+        PHP_VERSION: '7.2-cli-alpine'
+      dockerfile: Dockerfile-alpine
+    volumes:
+      - *volume-source
+      - coverage-7.2-alpine:/usr/src/yii2-domain-validator/coverage
+      - vendor-7.2-alpine:/usr/src/yii2-domain-validator/vendor
+
+volumes:
+  coverage-5.6:
+  coverage-5.6-alpine:
+  coverage-7.2:
+  coverage-7.2-alpine:
+  vendor-5.6:
+  vendor-5.6-alpine:
+  vendor-7.2:
+  vendor-7.2-alpine:
