@@ -1,5 +1,5 @@
+os: linux
 dist: trusty
-sudo: false
 
 language: php
 
@@ -15,7 +15,7 @@ php:
     - hhvm-3.30
     - nightly
 
-matrix:
+jobs:
     allow_failures:
         - php: nightly
 
