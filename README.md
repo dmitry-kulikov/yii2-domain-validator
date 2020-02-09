@@ -110,3 +110,59 @@ using option `labelNumberMin`.
 1. Client side validation not implemented and I have not such plans.
 Please consider [AJAX validation](https://www.yiiframework.com/doc/guide/2.0/en/input-validation#ajax-validation)
 if you want to bring domain validation on client side.
+
+# Testing
+
+Make sure you installed all composer dependencies (run `composer update` in the base directory of repository).
+Run PHPUnit in the base directory of repository:
+```sh
+./vendor/bin/phpunit
+```
+
+## Testing using Docker
+
+#### Requirements:
+
+- Docker 18.06.0 or later ([install](https://docs.docker.com/install))
+- Docker Compose 1.22.0 or later ([install](https://docs.docker.com/compose/install))
+
+#### Up and running
+
+Copy the environment configuration: `cp .env.example .env`.  
+Update `.env` with actual values.
+
+IMPORTANT: do not push image to public registry and do not share image using other ways because at this moment build
+script does not protect `.env` - these data will be available to all users having access to your image.
+
+Build image for service:
+```sh
+docker-compose build --pull 7.4
+```
+This command will build image using PHP 7.4. Also allowed `7.4-alpine`, `5.6`, `5.6-alpine` and others, see services
+defined in `docker-compose.yml`.
+
+Start service in background mode:
+```sh
+docker-compose up --detach 7.4
+```
+
+Execute tests in the running container:
+```sh
+docker-compose exec 7.4 ./vendor/bin/phpunit
+```
+
+Alternatively you can start shell in the running container and execute tests from it:
+```sh
+docker-compose exec 7.4 sh
+$ ./vendor/bin/phpunit
+```
+
+Stop and remove containers created by `up`:
+```sh
+docker-compose down
+```
+
+You may want to remove volumes along with containers:
+```sh
+docker-compose down --volume
+```
