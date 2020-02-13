@@ -13,9 +13,6 @@ x-context: &context
 x-defaults: &defaults
   tty: true
 
-x-github-oauth-token: &github-oauth-token
-  GITHUB_OAUTH_TOKEN: ${GITHUB_OAUTH_TOKEN}
-
 x-volume-source: &volume-source .:/usr/src/yii2-domain-validator
 
 services:
@@ -25,8 +22,9 @@ services:
       <<: *context
       args:
         <<: *composer-suffix-5-6
-        <<: *github-oauth-token
         PHP_VERSION: '5.6-cli'
+      target: debian-runkit
+    image: yii2-domain-validator-5.6
     volumes:
       - *volume-source
       - coverage-5.6:/usr/src/yii2-domain-validator/coverage
@@ -37,9 +35,9 @@ services:
       <<: *context
       args:
         <<: *composer-suffix-5-6
-        <<: *github-oauth-token
         PHP_VERSION: '5.6-cli-alpine'
-      dockerfile: Dockerfile-alpine
+      target: alpine
+    image: yii2-domain-validator-5.6-alpine
     volumes:
       - *volume-source
       - coverage-5.6-alpine:/usr/src/yii2-domain-validator/coverage
@@ -50,8 +48,9 @@ services:
       <<: *context
       args:
         <<: *composer-suffix-7-2
-        <<: *github-oauth-token
         PHP_VERSION: '7.2-cli'
+      target: debian-runkit7
+    image: yii2-domain-validator-7.2
     volumes:
       - *volume-source
       - coverage-7.2:/usr/src/yii2-domain-validator/coverage
@@ -62,9 +61,9 @@ services:
       <<: *context
       args:
         <<: *composer-suffix-7-2
-        <<: *github-oauth-token
         PHP_VERSION: '7.2-cli-alpine'
-      dockerfile: Dockerfile-alpine
+      target: alpine
+    image: yii2-domain-validator-7.2-alpine
     volumes:
       - *volume-source
       - coverage-7.2-alpine:/usr/src/yii2-domain-validator/coverage
@@ -75,8 +74,9 @@ services:
       <<: *context
       args:
         <<: *composer-suffix-7-4
-        <<: *github-oauth-token
         PHP_VERSION: '7.4-cli'
+      target: debian-runkit7
+    image: yii2-domain-validator-7.4
     volumes:
       - *volume-source
       - coverage-7.4:/usr/src/yii2-domain-validator/coverage
@@ -87,9 +87,9 @@ services:
       <<: *context
       args:
         <<: *composer-suffix-7-4
-        <<: *github-oauth-token
         PHP_VERSION: '7.4-cli-alpine'
-      dockerfile: Dockerfile-alpine
+      target: alpine
+    image: yii2-domain-validator-7.4-alpine
     volumes:
       - *volume-source
       - coverage-7.4-alpine:/usr/src/yii2-domain-validator/coverage

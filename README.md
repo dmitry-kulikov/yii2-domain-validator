@@ -123,20 +123,24 @@ Run PHPUnit in the base directory of repository:
 
 #### Requirements:
 
-- Docker 18.06.0 or later ([install](https://docs.docker.com/install))
-- Docker Compose 1.22.0 or later ([install](https://docs.docker.com/compose/install))
+- Docker 18.09.0 or later ([install](https://docs.docker.com/install));
+- Docker Compose 1.22.0 or later ([install](https://docs.docker.com/compose/install));
+- Docker plugins:
+    - `buildx` ([install](https://github.com/docker/buildx#installing)).
 
 #### Up and running
 
-Copy the environment configuration: `cp .env.example .env`.  
-Update `.env` with actual values.
-
-IMPORTANT: do not push image to public registry and do not share image using other ways because at this moment build
-script does not protect `.env` - these data will be available to all users having access to your image.
+Provide credentials to composer:
+```sh
+cp tests/composer/auth.json.example tests/composer/auth.json
+```
+I suggest to set GitHub OAuth token (also known as personal access token) in `tests/composer/auth.json`,
+however if you have doubts about security or you are lazy to generate token then you can replace content of
+`auth.json` on `{}`, in most cases this will work.
 
 Build image for service:
 ```sh
-docker-compose build --pull 7.4
+docker buildx bake --pull 7.4
 ```
 This command will build image using PHP 7.4. Also allowed `7.4-alpine`, `5.6`, `5.6-alpine` and others, see services
 defined in `docker-compose.yml`.

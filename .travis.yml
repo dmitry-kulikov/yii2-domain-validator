@@ -33,7 +33,7 @@ install:
 before_script:
     - |
         if [ $TRAVIS_PHP_VERSION = $COVERAGE_PHP_VERSION ]; then
-            phpenv config-add runkit.ini
+            phpenv config-add tests/runkit/runkit.ini
             PHPUNIT_FLAGS='--coverage-clover=coverage.clover'
         fi
 
