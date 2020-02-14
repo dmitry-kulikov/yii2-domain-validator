@@ -1,21 +1,34 @@
----
-engines:
-    duplication:
-        enabled: true
-        config:
-            languages:
-                - php
-    fixme:
-        enabled: true
-    phpmd:
-        enabled: true
-        checks:
-            CleanCode/ElseExpression:
-                enabled: false
-            CleanCode/StaticAccess:
-                enabled: false
-ratings:
-    paths:
-        - "**.php"
-exclude_paths:
-    - tests/
+version: "2"
+
+plugins:
+  # official plugins
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - php:
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: "PSR12"
+  phpmd:
+    enabled: true
+  sonar-php:
+    enabled: true
+    config:
+      tests_patterns:
+        - "tests/**"
+
+  # community-supported plugins
+  markdownlint:
+    enabled: true
+  phan:
+    enabled: true
+    config:
+      file_extensions: "php"
+      backward-compatibility-checks: true
+      dead-code-detection: true
+exclude_patterns:
+  - "tests/"
