@@ -12,7 +12,7 @@ plugins:
   phpcodesniffer:
     enabled: true
     config:
-      standard: "PSR12"
+      standard: "PSR2" # todo replace with PSR12 when Code Climate adds it
   phpmd:
     enabled: true
   sonar-php:
@@ -30,5 +30,6 @@ plugins:
       file_extensions: "php"
       backward-compatibility-checks: true
       dead-code-detection: true
+
 exclude_patterns:
   - "tests/"
