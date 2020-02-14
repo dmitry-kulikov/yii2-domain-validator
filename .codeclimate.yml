@@ -15,11 +15,11 @@ plugins:
       standard: "PSR2" # todo replace with PSR12 when Code Climate adds it
   phpmd:
     enabled: true
-#    checks:
-#      CleanCode/ElseExpression:
-#        enabled: false
-#      CleanCode/StaticAccess:
-#        enabled: false
+    checks:
+      CleanCode/ElseExpression:
+        enabled: false
+      CleanCode/StaticAccess:
+        enabled: false
   sonar-php:
     enabled: true
     config:
