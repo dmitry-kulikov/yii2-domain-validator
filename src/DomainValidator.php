@@ -277,7 +277,8 @@ class DomainValidator extends Validator
                 return $this->getErrorMessage('messageInvalidCharacter');
             }
 
-            if ($i == $labelsCount - 1 && !ctype_alpha($label[0])
+            if (
+                $i == $labelsCount - 1 && !ctype_alpha($label[0])
                 || !ctype_alnum($label[0])
                 || !ctype_alnum($label[$labelLength - 1])
             ) {
