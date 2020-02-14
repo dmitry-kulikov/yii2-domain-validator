@@ -29,6 +29,15 @@ plugins:
   # community-supported plugins
   markdownlint:
     enabled: true
+    checks:
+      MD001: # Header levels should only increment by one level at a time
+        enabled: false
+      MD024: # Multiple headers with the same content
+        enabled: false
+      MD025: # Multiple top level headers in the same document
+        enabled: false
+      MD026: # Trailing punctuation in header
+        enabled: false
   phan:
     enabled: true
     config:
