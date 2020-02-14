@@ -36,6 +36,7 @@ RUN apk update \
 # install dependencies using composer
 COPY tests/composer/composer-${COMPOSER_SUFFIX}.* ./
 RUN --mount=type=bind,target=tests/composer/auth.json,source=tests/composer/auth.json \
+    --mount=type=cache,id=composer,target=/root/.composer/cache,sharing=locked \
     composer global require "fxp/composer-asset-plugin:^1.4.6" \
     && COMPOSER=composer-${COMPOSER_SUFFIX}.json composer install
 
@@ -51,6 +52,7 @@ RUN apt-get update \
 # install dependencies using composer
 COPY tests/composer/composer-${COMPOSER_SUFFIX}.* ./
 RUN --mount=type=bind,target=tests/composer/auth.json,source=tests/composer/auth.json \
+    --mount=type=cache,id=composer,target=/root/.composer/cache,sharing=locked \
     composer global require "fxp/composer-asset-plugin:^1.4.6" \
     && COMPOSER=composer-${COMPOSER_SUFFIX}.json composer install
 

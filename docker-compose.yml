@@ -13,6 +13,7 @@ x-context: &context
 x-defaults: &defaults
   tty: true
 
+x-volume-composer-cache: &volume-composer-cache ./tests/composer/cache:/root/.composer/cache
 x-volume-source: &volume-source .:/usr/src/yii2-domain-validator
 
 services:
@@ -26,6 +27,7 @@ services:
       target: debian-runkit
     image: yii2-domain-validator-5.6
     volumes:
+      - *volume-composer-cache
       - *volume-source
       - coverage-5.6:/usr/src/yii2-domain-validator/coverage
       - vendor-5.6:/usr/src/yii2-domain-validator/vendor
@@ -39,6 +41,7 @@ services:
       target: alpine
     image: yii2-domain-validator-5.6-alpine
     volumes:
+      - *volume-composer-cache
       - *volume-source
       - coverage-5.6-alpine:/usr/src/yii2-domain-validator/coverage
       - vendor-5.6-alpine:/usr/src/yii2-domain-validator/vendor
@@ -52,6 +55,7 @@ services:
       target: debian-runkit7
     image: yii2-domain-validator-7.2
     volumes:
+      - *volume-composer-cache
       - *volume-source
       - coverage-7.2:/usr/src/yii2-domain-validator/coverage
       - vendor-7.2:/usr/src/yii2-domain-validator/vendor
@@ -65,6 +69,7 @@ services:
       target: alpine
     image: yii2-domain-validator-7.2-alpine
     volumes:
+      - *volume-composer-cache
       - *volume-source
       - coverage-7.2-alpine:/usr/src/yii2-domain-validator/coverage
       - vendor-7.2-alpine:/usr/src/yii2-domain-validator/vendor
@@ -78,6 +83,7 @@ services:
       target: debian-runkit7
     image: yii2-domain-validator-7.4
     volumes:
+      - *volume-composer-cache
       - *volume-source
       - coverage-7.4:/usr/src/yii2-domain-validator/coverage
       - vendor-7.4:/usr/src/yii2-domain-validator/vendor
@@ -91,6 +97,7 @@ services:
       target: alpine
     image: yii2-domain-validator-7.4-alpine
     volumes:
+      - *volume-composer-cache
       - *volume-source
       - coverage-7.4-alpine:/usr/src/yii2-domain-validator/coverage
       - vendor-7.4-alpine:/usr/src/yii2-domain-validator/vendor
