@@ -32,6 +32,8 @@ plugins:
     checks:
       MD001: # Header levels should only increment by one level at a time
         enabled: false
+      MD002: # First header should be a top level header
+        enabled: false
       MD024: # Multiple headers with the same content
         enabled: false
       MD025: # Multiple top level headers in the same document
