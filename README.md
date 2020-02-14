@@ -94,6 +94,7 @@ If you don't need URLs at all, only stand-alone domain name, you can disable thi
 by setting `allowURL` to `false`.
 If you always need to validate domain name in URL, no stand-alone domain name,
 then you should add URL validator before domain name validator:
+
     ```php
     public function rules()
     {
@@ -103,6 +104,7 @@ then you should add URL validator before domain name validator:
         ];
     }
     ```
+
 1. By default minimum number of domain name labels is 2. So `example` - invalid, `example.com` - valid.
 It is not standard requirement for domain name, standard states that domain name `example` is valid.
 I added this restriction for practical reasons, you can disable it or require even more domain name labels
@@ -122,14 +124,14 @@ Run PHPUnit in the base directory of repository:
 
 ## Testing using Docker
 
-#### Requirements:
+### Requirements
 
 - Docker 18.09.0 or later ([install](https://docs.docker.com/install));
 - Docker Compose 1.22.0 or later ([install](https://docs.docker.com/compose/install));
 - Docker plugins:
   - `buildx` ([install](https://github.com/docker/buildx#installing)).
 
-#### Up and running
+### Up and running
 
 Provide credentials to composer:
 
