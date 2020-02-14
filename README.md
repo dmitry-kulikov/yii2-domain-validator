@@ -25,7 +25,7 @@ The preferred way to install this extension is through [Composer](https://getcom
 To install, either run
 
 ```
-$ php composer.phar require kdn/yii2-domain-validator "*"
+php composer.phar require kdn/yii2-domain-validator "*"
 ```
 
 or add
@@ -124,14 +124,14 @@ Run PHPUnit in the base directory of repository:
 
 ## Testing using Docker
 
-### Requirements
+#### Requirements
 
 - Docker 18.09.0 or later ([install](https://docs.docker.com/install));
 - Docker Compose 1.22.0 or later ([install](https://docs.docker.com/compose/install));
 - Docker plugins:
   - `buildx` ([install](https://github.com/docker/buildx#installing)).
 
-### Up and running
+#### Up and running
 
 Provide credentials to composer:
 
