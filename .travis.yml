@@ -26,15 +26,26 @@ install:
   - |
     COVERAGE_PHP_VERSION='5.6'
     if [ $TRAVIS_PHP_VERSION = $COVERAGE_PHP_VERSION ]; then
+        # install and configure runkit extension
         pecl channel-update pecl.php.net
         pecl install runkit
+        phpenv config-add tests/runkit/travis.ini
+
+        # code coverage for Code Climate
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+
+        # code coverage for Scrutinizer
+        wget https://scrutinizer-ci.com/ocular.phar
     fi
 
 before_script:
   - |
     if [ $TRAVIS_PHP_VERSION = $COVERAGE_PHP_VERSION ]; then
-        phpenv config-add tests/runkit/travis.ini
         PHPUNIT_FLAGS='--coverage-clover=coverage.clover'
+
+        # code coverage for Code Climate
+        ./cc-test-reporter before-build
     fi
 
 script:
@@ -43,6 +54,9 @@ script:
 after_script:
   - |
     if [ $TRAVIS_PHP_VERSION = $COVERAGE_PHP_VERSION ]; then
-        wget https://scrutinizer-ci.com/ocular.phar
+        # code coverage for Code Climate
+        ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+        # code coverage for Scrutinizer
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
     fi
