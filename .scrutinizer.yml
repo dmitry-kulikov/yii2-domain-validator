@@ -1,19 +1,15 @@
 build:
   nodes:
-    analysis_phpcs:
-      tests:
-        override:
-          - phpcs-run --standard=PSR12
-    analysis_scrutinizer:
+    analysis:
       project_setup:
         override: true
       tests:
         override:
           - php-scrutinizer-run --enable-security-analysis
-    analysis_shellcheck:
+    phpcs:
       tests:
         override:
-          - shellcheck-run
+          - phpcs-run --standard=PSR12 ./
 
 filter:
   dependency_paths:
