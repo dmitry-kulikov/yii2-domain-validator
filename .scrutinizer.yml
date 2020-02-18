@@ -1,31 +1,24 @@
-before_commands:
-  - composer self-update
-  - composer install --no-interaction --prefer-source
+build:
+  nodes:
+    analysis_phpcs:
+      tests:
+        override:
+          - phpcs-run --standard=PSR12
+    analysis_scrutinizer:
+      project_setup:
+        override: true
+      tests:
+        override:
+          - php-scrutinizer-run --enable-security-analysis
+    analysis_shellcheck:
+      tests:
+        override:
+          - shellcheck-run
 
-checks:
-  php:
-    code_rating: true
-    duplication: true
+filter:
+  dependency_paths:
+    - vendor/
 
 tools:
   external_code_coverage: true
-  php_analyzer:
-    enabled: true
-  php_code_sniffer:
-    enabled: true
-    config:
-      standard: PSR12
-  php_loc:
-    enabled: true
-    excluded_dirs: [tests]
-  php_mess_detector:
-    enabled: true
-    filter:
-      paths: [src/*]
-  php_pdepend:
-    enabled: true
-    excluded_dirs: [tests]
-  php_sim:
-    enabled: true
-    filter:
-      paths: [src/*]
+  # timeout: 600 # default timeout in seconds
