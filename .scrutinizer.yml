@@ -4,10 +4,6 @@ build:
       tests:
         override:
           - php-scrutinizer-run
-    phpcs:
-      tests:
-        override:
-          - phpcs-run --standard=PSR12 ./
 
 filter:
   dependency_paths:
