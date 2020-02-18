@@ -9,13 +9,12 @@ BASE_PATH="$(dirname "$0")"
 COMPOSER_LOCK_TO_UPDATE="${BASE_PATH}/composer-${PHP_VERSION}.lock"
 
 # change directory to directory containing composer.json
-cd "${BASE_PATH}/../.."
-# || exit # todo test for shellcheck
+cd "${BASE_PATH}/../.." || exit
 
 # remove composer.lock because it probably created for other version of PHP
 rm composer.lock
 composer update
-mv --force composer.lock ${COMPOSER_LOCK_TO_UPDATE} # todo test for shellcheck
+mv --force composer.lock "${COMPOSER_LOCK_TO_UPDATE}"
 cp "${BASE_PATH}/composer-${LATEST_PHP_VERSION}.lock" composer.lock
 chown 1000:1000 composer.lock "${COMPOSER_LOCK_TO_UPDATE}"
 chmod 664 composer.lock "${COMPOSER_LOCK_TO_UPDATE}"
