@@ -7,6 +7,7 @@ ARG PHP_VERSION=5.6-cli
 ########################################################################################################################
 FROM php:${PHP_VERSION} AS default
 ARG COMPOSER_SUFFIX=5.6
+ENV COMPOSER_SUFFIX=${COMPOSER_SUFFIX}
 
 # install PHP extensions
 ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions \

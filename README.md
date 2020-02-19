@@ -171,6 +171,13 @@ docker-compose exec 7.4 sh
 $ ./vendor/bin/phpunit
 ```
 
+Update composer dependencies in the running container:
+
+```sh
+docker-compose exec 7.4 sh
+$ ./tests/composer/update-dependencies.sh
+```
+
 Stop and remove containers created by `up`:
 
 ```sh
