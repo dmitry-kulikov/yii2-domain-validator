@@ -10,9 +10,10 @@ ARG COMPOSER_SUFFIX=5.6
 ENV COMPOSER_SUFFIX=${COMPOSER_SUFFIX}
 
 # install PHP extensions
-ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions \
+# 267eea1255c4f12a1cc3b31471e81898e81363d2 commited on 2020-03-03T13:25:40Z
+ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/267eea1255c4f12a1cc3b31471e81898e81363d2/install-php-extensions \
     /usr/local/bin/
-RUN chmod uga+x /usr/local/bin/install-php-extensions \
+RUN chmod a+x /usr/local/bin/install-php-extensions \
     && sync \
     && install-php-extensions \
         intl `# for app` \
