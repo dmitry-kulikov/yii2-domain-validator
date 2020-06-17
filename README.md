@@ -82,7 +82,7 @@ Please view public properties in class
 [DomainValidator](https://github.com/dmitry-kulikov/yii2-domain-validator/blob/master/src/DomainValidator.php)
 to get info about all available options, they documented comprehensively. Here I will highlight only non-evident things.
 
-1. By default validator allows URL, it will try to parse URL and then validate domain name.
+1. By default, validator allows URL, it will try to parse URL and then validate domain name.
    Note that model attribute value itself will not be modified.
    If URL parsing fails then validator considers value as domain.
    Validator may work not perfect for invalid URLs. For example user input is `http//example.com`,
@@ -105,7 +105,7 @@ to get info about all available options, they documented comprehensively. Here I
    }
    ```
 
-1. By default minimum number of domain name labels is 2. So `example` - invalid, `example.com` - valid.
+1. By default, minimum number of domain name labels is 2. So `example` - invalid, `example.com` - valid.
    It is not standard requirement for domain name, standard states that domain name `example` is valid.
    I added this restriction for practical reasons, you can disable it or require even more domain name labels
    using option `labelNumberMin`.
