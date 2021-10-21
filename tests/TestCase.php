@@ -14,26 +14,26 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * Mock Yii application.
+     * @before
      */
-    protected function setUp()
+    protected function prepare()
     {
-        parent::setUp();
         static::mockApplication();
     }
 
     /**
      * Clean up after test.
-     * By default the application created with `mockApplication` will be destroyed.
+     * By default, the application created with `mockApplication` will be destroyed.
+     * @after
      */
-    protected function tearDown()
+    protected function clear()
     {
-        parent::tearDown();
         static::destroyApplication();
     }
 
     /**
      * Populates Yii::$app with a new application.
-     * The application will be destroyed on tearDown() automatically.
+     * The application will be destroyed on clear() automatically.
      * @param array $config the application configuration, if needed
      * @param string $appClass name of the application class to create
      */

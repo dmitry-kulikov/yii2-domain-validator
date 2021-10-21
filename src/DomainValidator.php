@@ -20,7 +20,7 @@ class DomainValidator extends Validator
     public $allowUnderscore = false;
 
     /**
-     * @var bool whether to allow URL address along with domain name;
+     * @var bool whether to allow the URL address along with domain name;
      * defaults to true, meaning that validator should try to parse URL address and then validate domain name
      */
     public $allowURL = true;
@@ -33,7 +33,7 @@ class DomainValidator extends Validator
      * this field can be specified as a PHP callback, for example:
      * ```php
      * function (string $domain) {
-     *     $records = @dns_get_record("$domain.", DNS_MX); // @ is just for simplicity of example, avoid to use it
+     *     $records = @dns_get_record("$domain.", DNS_MX); // @ is just for simplicity of example, avoid using it
      *     if (empty($records)) {
      *         return ['Cannot find Mail Exchanger record for "{value}".', ['value' => $domain]];
      *     }

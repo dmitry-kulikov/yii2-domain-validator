@@ -4,12 +4,11 @@ Domain validator for Yii 2.
 
 [![License](https://poser.pugx.org/kdn/yii2-domain-validator/license)](https://packagist.org/packages/kdn/yii2-domain-validator)
 [![Latest Stable Version](https://poser.pugx.org/kdn/yii2-domain-validator/v/stable)](https://packagist.org/packages/kdn/yii2-domain-validator)
-[![Build Status](https://travis-ci.org/dmitry-kulikov/yii2-domain-validator.svg?branch=master)](https://travis-ci.org/dmitry-kulikov/yii2-domain-validator)
 [![Code Coverage](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dmitry-kulikov/yii2-domain-validator/?branch=master)
 [![Code Climate](https://codeclimate.com/github/dmitry-kulikov/yii2-domain-validator/badges/gpa.svg)](https://codeclimate.com/github/dmitry-kulikov/yii2-domain-validator)
 
-# Requirements
+## Requirements
 
 - PHP 5.4 or later or HHVM 3;
 - Yii framework 2;
@@ -18,25 +17,25 @@ Domain validator for Yii 2.
   - `mbstring` (multibyte string) extension (required);
   - `intl` (internationalization functions) extension (optional, for IDN only).
 
-# Installation
+## Installation
 
 The preferred way to install this extension is through [Composer](https://getcomposer.org).
 
 To install, either run
 
-```
+```sh
 php composer.phar require kdn/yii2-domain-validator "*"
 ```
 
 or add
 
-```
+```text
 "kdn/yii2-domain-validator": "*"
 ```
 
 to the `require` section of your `composer.json` file.
 
-# Usage
+## Usage
 
 Model class example:
 
@@ -109,83 +108,95 @@ to get info about all available options, they documented comprehensively. Here I
    It is not standard requirement for domain name, standard states that domain name `example` is valid.
    I added this restriction for practical reasons, you can disable it or require even more domain name labels
    using option `labelNumberMin`.
-1. Client side validation not implemented and I have not such plans.
+1. Client side validation not implemented, and I have not such plans.
    Please consider [AJAX validation](https://www.yiiframework.com/doc/guide/2.0/en/input-validation#ajax-validation)
    if you want to bring domain validation on client side.
 
-# Testing
+## Testing
 
-Make sure you installed all composer dependencies (run `composer update` in the base directory of repository).
+Make sure you installed all Composer dependencies (run `composer update` in the base directory of repository).
 Run PHPUnit in the base directory of repository:
 
 ```sh
 ./vendor/bin/phpunit
 ```
 
-## Testing using Docker
+### Testing using Docker
 
 #### Requirements
 
-- Docker 18.09.0 or later ([install](https://docs.docker.com/install));
-- Docker Compose 1.22.0 or later ([install](https://docs.docker.com/compose/install));
+- Docker >= 19.03.0 ([install](https://docs.docker.com/get-docker));
+- Docker Compose >= 1.25.5 ([install](https://docs.docker.com/compose/install));
 - Docker plugins:
-  - `buildx` ([install](https://github.com/docker/buildx#installing)).
+  - buildx ([install](https://github.com/docker/buildx#installing)).
 
 #### Up and running
 
-Provide credentials to composer:
+1. Provide credentials for Composer:
 
-```sh
-cp tests/composer/auth.json.example tests/composer/auth.json
-```
+   ```sh
+   cp auth.json.example \
+       auth.json
+   ```
 
-I suggest to set GitHub OAuth token (also known as personal access token) in `tests/composer/auth.json`,
-however if you have doubts about security or you are lazy to generate token then you can replace content of
-`auth.json` on `{}`, in most cases this will work.
+   I suggest to set GitHub OAuth token (also known as personal access token) in `auth.json`,
+   however if you have doubts about security, or you are lazy to generate token then you can replace content of
+   `auth.json` on `{}`, in most cases this will work.
 
-Build image for service:
+1. Build images for services:
 
-```sh
-docker buildx bake --pull --load 7.4
-```
+   ```sh
+   docker buildx bake --load --pull
+   ```
 
-This command will build image using PHP 7.4. Also allowed `7.4-alpine`, `5.6`, `5.6-alpine` and others, see services
-defined in `docker-compose.yml`.
+   or
 
-Start service in background mode:
+   ```sh
+   docker buildx bake --load --pull --no-cache --progress plain
+   ```
 
-```sh
-docker-compose up --detach 7.4
-```
+   see `docker buildx bake --help` for details.
 
-Execute tests in the running container:
+1. Start service in background mode:
 
-```sh
-docker-compose exec 7.4 ./vendor/bin/phpunit
-```
+   ```sh
+   docker-compose up --detach 8.0
+   ```
 
-Alternatively you can start shell in the running container and execute tests from it:
+   This command will start the service with PHP 8.0. Also allowed `7.4`, `5.6`, `8.0-alpine`, `7.4-alpine`
+   and `5.6-alpine`, see services defined in `docker-compose.yml`.
 
-```sh
-docker-compose exec 7.4 sh
-$ ./vendor/bin/phpunit
-```
+1. Execute tests in the running container:
 
-Update composer dependencies in the running container:
+   ```sh
+   docker-compose exec 8.0 ./vendor/bin/phpunit
+   ```
 
-```sh
-docker-compose exec 7.4 sh
-$ ./tests/composer/update-dependencies.sh
-```
+   Alternatively you can start a shell in the running container and execute tests from it:
 
-Stop and remove containers created by `up`:
+   ```sh
+   docker-compose exec 8.0 sh
+   $ ./vendor/bin/phpunit
+   ```
 
-```sh
-docker-compose down
-```
+1. Stop and remove containers created by `up`:
 
-You may want to remove volumes along with containers:
+   ```sh
+   docker-compose down
+   ```
 
-```sh
-docker-compose down --volumes
-```
+   You may want to remove volumes along with containers:
+
+   ```sh
+   docker-compose down --volumes
+   ```
+
+## Backward compatibility promise
+
+yii2-domain-validator is using [Semver](https://semver.org). This means that versions are tagged
+with MAJOR.MINOR.PATCH. Only a new major version will be allowed to break backward
+compatibility (BC).
+
+PHP 8 introduced [named arguments](https://wiki.php.net/rfc/named_params), which
+increased the cost and reduces flexibility for package maintainers. The names of the
+arguments for methods in yii2-domain-validator is not included in our BC promise.

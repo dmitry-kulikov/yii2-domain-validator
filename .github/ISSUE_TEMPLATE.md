@@ -8,8 +8,8 @@
 
 | Q                 | A
 |-------------------|---
-| Extension version | 
-| Yii version       | 
-| PHP version       | 
-| HHVM version      | 
-| Operating system  | 
+| Extension version |
+| Yii version       |
+| PHP version       |
+| HHVM version      |
+| Operating system  |

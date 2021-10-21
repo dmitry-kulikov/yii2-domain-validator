@@ -5,6 +5,7 @@ namespace kdn\yii2\validators;
 use kdn\yii2\validators\mocks\ModelMock;
 use stdClass;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * Class DomainValidatorTest.
@@ -21,11 +22,11 @@ class DomainValidatorTest extends TestCase
     protected $validator;
 
     /**
-     * {@inheritdoc}
+     * @before
      */
-    protected function setUp()
+    protected function prepare()
     {
-        parent::setUp();
+        parent::prepare();
         $this->validator = new DomainValidator(['labelNumberMin' => 1]);
     }
 
@@ -57,7 +58,6 @@ class DomainValidatorTest extends TestCase
             'HTTP, one domain name label' => ['http://localhost'],
             'HTTP, two domain name labels' => ['http://example.com/index.html'],
             'FTP, domain name with trailing dot' => ['ftp://example.com./img/dir/'],
-            // todo it causes empty array in "idn_to_ascii" $idnaInfo
             'HTTPS, 127 levels, 253 characters and trailing dot' => [
                 'https://a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.' .
                 'a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.' .
@@ -105,7 +105,6 @@ class DomainValidatorTest extends TestCase
             'IDN, HTTP, two domain name labels' => ['http://пример.испытание/index.html'],
             'IDN, FTP, domain name with trailing dot' => ['ftp://пример.испытание./img/dir/'],
             'IDN, FTP, mixed domain name' => ['ftp://пример.test.испытание/img/dir/'],
-            // todo it causes empty array in "idn_to_ascii" $idnaInfo
             'IDN, HTTPS, 34 levels, 253 characters (ф. == xn--t1a.) and trailing dot' => [
                 'https://ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.s.s.s./index.html',
             ],
@@ -233,7 +232,7 @@ class DomainValidatorTest extends TestCase
         $this->assertTrue($validator->validate($nonexistentDomain));
         $customErrorMessage = 'test';
         $validator->checkDNS = function ($value) use ($nonexistentDomain, $customErrorMessage) {
-            $records = @dns_get_record("$value.", DNS_MX); // @ is just for simplicity of test, avoid to use it
+            $records = @dns_get_record("$value.", DNS_MX); // @ is just for simplicity of test, avoid using it
             if (empty($records)) {
                 $this->assertEquals($nonexistentDomain, $value);
 
@@ -546,21 +545,17 @@ class DomainValidatorTest extends TestCase
         return array_merge(
             static::invalidDomainProvider('testInvalidDomainWithEnabledIdn'),
             [
-                /* todo it causes fatal error in PHP
-                'IDN, domain name too long, fatal' => [
+                'IDN, domain name too long, numerous labels' => [
                     'ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.ф.s.s.s.s',
                     $messageTooLong,
                 ],
-                //*/
-                /* todo it causes fatal error in PHP
-                'IDN, domain name too long, fatal' => [
+                'IDN, domain name too long, long labels' => [
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'фффффффффффффффффффффффффффффффффффффффффффффффффффффффф.',
                     $messageTooLong,
                 ],
-                //*/
 
                 'IDN, first domain name label starts with hyphen' => ['-пример.испытание', $messageLabelStartEnd],
                 'IDN, first domain name label ends with hyphen' => ['пример-.испытание', $messageLabelStartEnd],
@@ -584,7 +579,6 @@ class DomainValidatorTest extends TestCase
                     $messageLabelStartEnd,
                 ],
 
-                // todo it causes empty array in "idn_to_ascii" $idnaInfo
                 'IDN, domain name too long' => [
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
                     'ффффффффффффффффффффффффффффффффффффффффффффффффффффффффф.' .
@@ -715,19 +709,38 @@ class DomainValidatorTest extends TestCase
     /**
      * IMPORTANT: this test should be executed after others, because it can remove function "idn_to_ascii".
      * @covers \kdn\yii2\validators\DomainValidator::init
-     * @expectedException \yii\base\InvalidConfigException
-     * @expectedExceptionMessage In order to use IDN validation intl extension must be installed and enabled.
      * @small
      */
     public function testInitIdnIntlException()
     {
-        if (!function_exists('runkit_function_remove') || !ini_get('runkit.internal_override')) {
+        $skip = true;
+        if (ini_get('runkit.internal_override')) {
+            if (function_exists('runkit7_function_remove')) {
+                $skip = false;
+                $runkitFunctionName = 'runkit7_function_remove';
+            } elseif (function_exists('runkit_function_remove')) {
+                $skip = false;
+                $runkitFunctionName = 'runkit_function_remove';
+            }
+        }
+
+        if ($skip) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
             return;
         }
 
-        runkit_function_remove('idn_to_ascii');
-        new DomainValidator(['enableIDN' => true]);
+        $runkitFunctionName('idn_to_ascii');
+
+        $expectedException = new InvalidConfigException(
+            'In order to use IDN validation intl extension must be installed and enabled.'
+        );
+        $actualException = null;
+        try {
+            new DomainValidator(['enableIDN' => true]);
+        } catch (InvalidConfigException $e) {
+            $actualException = $e;
+        }
+        $this->assertEquals($expectedException, $actualException);
     }
 
     /**
@@ -740,13 +753,24 @@ class DomainValidatorTest extends TestCase
      */
     public function testDnsWarning()
     {
-        if (!function_exists('runkit_function_redefine') || !ini_get('runkit.internal_override')) {
+        $skip = true;
+        if (ini_get('runkit.internal_override')) {
+            if (function_exists('runkit7_function_redefine')) {
+                $skip = false;
+                $runkitFunctionName = 'runkit7_function_redefine';
+            } elseif (function_exists('runkit_function_redefine')) {
+                $skip = false;
+                $runkitFunctionName = 'runkit_function_redefine';
+            }
+        }
+
+        if ($skip) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
             return;
         }
 
         // redefine dns_get_record to emit PHP Warning, which will be converted by Yii to yii\base\ErrorException
-        if (!runkit_function_redefine('dns_get_record', '', 'return 1 / 0;')) {
+        if (!$runkitFunctionName('dns_get_record', '', 'trigger_error("Warning", E_USER_WARNING);')) {
             $this->markTestSkipped('Cannot redefine function "dns_get_record".');
             return;
         }

@@ -11,4 +11,4 @@ filter:
 
 tools:
   external_code_coverage: true
-  # timeout: 600 # default timeout in seconds
+  # timeout: 300 # default timeout in seconds

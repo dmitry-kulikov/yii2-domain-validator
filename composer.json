@@ -1,14 +1,14 @@
 {
     "name": "kdn/yii2-domain-validator",
     "description": "Domain name validator for Yii 2.",
+    "type": "yii2-extension",
     "keywords": [
         "yii2",
         "extension",
         "validator",
         "domain"
     ],
-    "homepage": "https://github.com/dmitry-kulikov/yii2-domain-validator",
-    "type": "yii2-extension",
+    "readme": "./README.md",
     "license": "MIT",
     "authors": [
         {
@@ -16,6 +16,10 @@
             "email": "kulikovdn@gmail.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/dmitry-kulikov/yii2-domain-validator/issues",
+        "source": "https://github.com/dmitry-kulikov/yii2-domain-validator"
+    },
     "require": {
         "php": ">=5.4.0",
         "ext-ctype": "*",
@@ -24,8 +28,8 @@
         "yiisoft/yii2": "2.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*",
-        "phpunit/php-invoker": "1.*"
+        "phpunit/phpunit": ">=4.0 <10.0",
+        "phpunit/php-invoker": ">=1.0 <4.0"
     },
     "suggest": {
         "ext-intl": "this extension is needed for IDN support and to run all tests, otherwise some tests will be skipped",
@@ -48,5 +52,7 @@
         "psr-4": {
             "kdn\\yii2\\validators\\": "tests/"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
