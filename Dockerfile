@@ -20,7 +20,7 @@ RUN curl --silent --show-error --location --output /usr/local/bin/install-php-ex
         pcntl `# for tests` \
         xdebug `# for tests`
 
-# install the latest stable Composer version
+# install the latest stable Composer 1.x version
 RUN curl --silent --show-error --location https://getcomposer.org/installer | php -- --1 \
     && mv composer.phar /usr/local/bin/composer
 
@@ -38,23 +38,32 @@ RUN apk update \
 
 # install dependencies using Composer
 RUN --mount=type=cache,id=composer,target=/root/.composer/cache,sharing=locked \
-    composer global require "fxp/composer-asset-plugin:^1.4.6" \
-    && composer update
+    composer global require --optimize-autoloader 'fxp/composer-asset-plugin:^1.4.6' \
+    && composer update \
+    && composer clear-cache
 
 ########################################################################################################################
 FROM default AS debian
 
 # install system packages
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get --assume-yes --no-install-recommends install \
+        gnupg2 \
+    && apt-key update \
+    && apt-get update \
+    && apt-get --assume-yes --no-install-recommends install \
         git `# for Composer and developers` \
         nano `# for developers` \
-        unzip `# for Composer`
+        unzip `# for Composer` \
+
+    # clean up
+    && rm --force --recursive /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install dependencies using Composer
 RUN --mount=type=cache,id=composer,target=/root/.composer/cache,sharing=locked \
-    composer global require "fxp/composer-asset-plugin:^1.4.6" \
-    && composer install
+    composer global require --optimize-autoloader 'fxp/composer-asset-plugin:^1.4.6' \
+    && composer update \
+    && composer clear-cache
 
 ########################################################################################################################
 FROM debian AS debian-runkit
