@@ -713,18 +713,16 @@ class DomainValidatorTest extends TestCase
      */
     public function testInitIdnIntlException()
     {
-        $skip = true;
+        $runkitFunctionName = null;
         if (ini_get('runkit.internal_override')) {
             if (function_exists('runkit7_function_remove')) {
-                $skip = false;
                 $runkitFunctionName = 'runkit7_function_remove';
             } elseif (function_exists('runkit_function_remove')) {
-                $skip = false;
                 $runkitFunctionName = 'runkit_function_remove';
             }
         }
 
-        if ($skip) {
+        if ($runkitFunctionName === null) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
             return;
         }
@@ -753,18 +751,16 @@ class DomainValidatorTest extends TestCase
      */
     public function testDnsWarning()
     {
-        $skip = true;
+        $runkitFunctionName = null;
         if (ini_get('runkit.internal_override')) {
             if (function_exists('runkit7_function_redefine')) {
-                $skip = false;
                 $runkitFunctionName = 'runkit7_function_redefine';
             } elseif (function_exists('runkit_function_redefine')) {
-                $skip = false;
                 $runkitFunctionName = 'runkit_function_redefine';
             }
         }
 
-        if ($skip) {
+        if ($runkitFunctionName === null) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
             return;
         }

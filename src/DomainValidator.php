@@ -208,7 +208,7 @@ class DomainValidator extends Validator
         }
 
         if ($this->enableIDN) {
-            $idnaInfo = null;
+            $idnaInfo = [];
             $options = IDNA_CHECK_BIDI | IDNA_CHECK_CONTEXTJ;
             $asciiValue = idn_to_ascii($value, $options, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
             if ($asciiValue !== false) {
