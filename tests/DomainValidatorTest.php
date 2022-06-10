@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @noinspection HttpUrlsUsage
+ */
+
 namespace kdn\yii2\validators;
 
 use kdn\yii2\validators\mocks\ModelMock;
@@ -186,6 +190,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -267,6 +273,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -334,6 +342,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -387,6 +397,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -424,6 +436,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -451,6 +465,7 @@ class DomainValidatorTest extends TestCase
         $messageLabelTooShort = 'Each label of the input value should contain at least 1 character.';
         $messageNotString = 'the input value must be a string.';
         $messageTooShort = 'the input value should contain at least 1 character.';
+
         return [
             'null' => [null, $messageNotString],
             'boolean' => [true, $messageNotString],
@@ -542,6 +557,7 @@ class DomainValidatorTest extends TestCase
             ' The rightmost label of the input value should start with letter.';
         $messageLabelTooLong = 'Label of the input value is too long.';
         $messageTooLong = 'the input value is too long.';
+
         return array_merge(
             static::invalidDomainProvider('testInvalidDomainWithEnabledIdn'),
             [
@@ -613,6 +629,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -677,6 +695,8 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -724,6 +744,8 @@ class DomainValidatorTest extends TestCase
 
         if ($runkitFunctionName === null) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
@@ -762,12 +784,16 @@ class DomainValidatorTest extends TestCase
 
         if ($runkitFunctionName === null) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 
         // redefine dns_get_record to emit PHP Warning, which will be converted by Yii to yii\base\ErrorException
         if (!$runkitFunctionName('dns_get_record', '', 'trigger_error("Warning", E_USER_WARNING);')) {
             $this->markTestSkipped('Cannot redefine function "dns_get_record".');
+
+            /** @noinspection PhpUnreachableStatementInspection */
             return;
         }
 

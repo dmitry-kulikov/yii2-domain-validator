@@ -234,6 +234,7 @@ class DomainValidator extends Validator
                 } else {
                     $errorMessageName = 'message';
                 }
+
                 return $this->getErrorMessage($errorMessageName);
             }
         }
@@ -338,6 +339,7 @@ class DomainValidator extends Validator
             return [$this->$name, $params];
         }
         $this->$name = Yii::t('kdn/yii2/validators/domain', $this->getDefaultErrorMessages()[$name]);
+
         return [$this->$name, $params];
     }
 
@@ -384,6 +386,7 @@ class DomainValidator extends Validator
                     'Each label of {attribute} can consist of only latin letters, numbers and hyphens.';
             }
         }
+
         return $messages;
     }
 }

@@ -160,22 +160,22 @@ Run PHPUnit in the base directory of repository:
 1. Start service in background mode:
 
    ```sh
-   docker-compose up --detach 8.0
+   docker-compose up --detach 8.1
    ```
 
-   This command will start the service with PHP 8.0. Also allowed `7.4`, `5.6`, `8.0-alpine`, `7.4-alpine`
+   This command will start the service with PHP 8.1. Also allowed `7.4`, `5.6`, `8.1-alpine`, `7.4-alpine`
    and `5.6-alpine`, see services defined in `docker-compose.yml`.
 
 1. Execute tests in the running container:
 
    ```sh
-   docker-compose exec 8.0 ./vendor/bin/phpunit
+   docker-compose exec 8.1 ./vendor/bin/phpunit
    ```
 
    Alternatively you can start a shell in the running container and execute tests from it:
 
    ```sh
-   docker-compose exec 8.0 sh
+   docker-compose exec 8.1 sh
    $ ./vendor/bin/phpunit
    ```
 

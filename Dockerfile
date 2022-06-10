@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.3.0-labs
+# syntax=docker/dockerfile:1.4.2-labs
 
 # PHP version
 # examples of allowed values: 5.6-cli, 5.6-cli-alpine, 7.4-cli, 7.4-cli-alpine
@@ -12,7 +12,7 @@ WORKDIR /usr/src/yii2-domain-validator
 
 # install PHP extensions
 RUN curl --silent --show-error --location --output /usr/local/bin/install-php-extensions \
-        https://github.com/mlocati/docker-php-extension-installer/releases/download/1.2.60/install-php-extensions \
+        https://github.com/mlocati/docker-php-extension-installer/releases/download/1.5.20/install-php-extensions \
     && chmod a+x /usr/local/bin/install-php-extensions \
     && sync \
     && install-php-extensions \
@@ -55,7 +55,7 @@ RUN apt-get update \
         git `# for Composer and developers` \
         nano `# for developers` \
         unzip `# for Composer` \
-
+    \
     # clean up
     && rm --force --recursive /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

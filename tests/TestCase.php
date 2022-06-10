@@ -79,6 +79,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         return array_map(
             function ($data) use ($value) {
                 $data[] = $value;
+
                 return $data;
             },
             $array

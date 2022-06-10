@@ -9,7 +9,7 @@
  * enclosed between a pair of '@@' marks.
  *
  * Message string can be used with plural forms format. Check i18n section
- * of the guide for details.
+ * of the Yii 2 guide for details.
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */

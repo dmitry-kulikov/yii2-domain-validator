@@ -22,6 +22,7 @@
     },
     "require": {
         "php": ">=5.4.0",
+
         "ext-ctype": "*",
         "ext-mbstring": "*",
 
@@ -35,14 +36,6 @@
         "ext-intl": "this extension is needed for IDN support and to run all tests, otherwise some tests will be skipped",
         "ext-runkit": "this extension is needed to run all tests, otherwise some tests will be skipped"
     },
-    "config": {
-        "fxp-asset": {
-            "vcs-driver-options": {
-                "github-no-api": true
-            },
-            "pattern-skip-version": "(-build|-patch)"
-        }
-    },
     "autoload": {
         "psr-4": {
             "kdn\\yii2\\validators\\": "src/"
@@ -54,5 +47,13 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "fxp-asset": {
+            "pattern-skip-version": "(-build|-patch)",
+            "vcs-driver-options": {
+                "github-no-api": true
+            }
+        }
+    }
 }

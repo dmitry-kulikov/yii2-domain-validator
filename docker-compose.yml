@@ -66,38 +66,38 @@ services:
       - *volume-source
       - *volume-xdebug-3-config
       - vendor-7.4-alpine:/usr/src/yii2-domain-validator/vendor
-  '8.0':
+  '8.1':
     <<: *defaults
     build:
       <<: *build
       args:
-        PHP_VERSION: '8.0-cli'
+        PHP_VERSION: '8.1-cli'
       target: debian-runkit7
-    image: yii2-domain-validator-8.0
+    image: yii2-domain-validator-8.1
     volumes:
       - *volume-composer-cache
       - *volume-runkit7-config
       - *volume-source
       - *volume-xdebug-3-config
-      - vendor-8.0:/usr/src/yii2-domain-validator/vendor
-  '8.0-alpine':
+      - vendor-8.1:/usr/src/yii2-domain-validator/vendor
+  '8.1-alpine':
     <<: *defaults
     build:
       <<: *build
       args:
-        PHP_VERSION: '8.0-cli-alpine'
+        PHP_VERSION: '8.1-cli-alpine'
       target: alpine
-    image: yii2-domain-validator-8.0-alpine
+    image: yii2-domain-validator-8.1-alpine
     volumes:
       - *volume-composer-cache
       - *volume-source
       - *volume-xdebug-3-config
-      - vendor-8.0-alpine:/usr/src/yii2-domain-validator/vendor
+      - vendor-8.1-alpine:/usr/src/yii2-domain-validator/vendor
 
 volumes:
   vendor-5.6:
   vendor-5.6-alpine:
   vendor-7.4:
   vendor-7.4-alpine:
-  vendor-8.0:
-  vendor-8.0-alpine:
+  vendor-8.1:
+  vendor-8.1-alpine:

@@ -6,10 +6,10 @@
 
 ### Additional info
 
-| Q                 | A
-|-------------------|---
-| Extension version |
-| Yii version       |
-| PHP version       |
-| HHVM version      |
-| Operating system  |
+| Q                 | A   |
+|-------------------|-----|
+| Extension version |     |
+| Yii version       |     |
+| PHP version       |     |
+| HHVM version      |     |
+| Operating system  |     |
