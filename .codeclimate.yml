@@ -1,4 +1,4 @@
-version: "2"
+version: '2'
 
 plugins:
   # official plugins
@@ -11,21 +11,21 @@ plugins:
     enabled: true
   phpcodesniffer:
     enabled: true
-    channel: beta
+    channel: 'beta'
     config:
-      standard: "PSR12"
+      standard: 'PSR12'
   phpmd:
     enabled: true
     checks:
-      CleanCode/ElseExpression:
+      CleanCode/ElseExpression: # https://phpmd.org/rules/cleancode.html
         enabled: false
-      CleanCode/StaticAccess:
+      CleanCode/StaticAccess: # https://phpmd.org/rules/cleancode.html
         enabled: false
   sonar-php:
     enabled: true
     config:
       tests_patterns:
-        - "tests/**"
+        - 'tests/**'
 
   # community-supported plugins
   markdownlint:
@@ -33,11 +33,13 @@ plugins:
   phan:
     enabled: true
     config:
-      file_extensions: "php"
+      file_extensions: 'php'
       backward-compatibility-checks: true
       dead-code-detection: true
+  semgrep:
+    enabled: true
   shellcheck:
     enabled: true
 
 exclude_patterns:
-  - "tests/"
+  - 'tests/'
