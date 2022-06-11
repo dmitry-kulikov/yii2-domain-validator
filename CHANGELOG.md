@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.4] - 2022-06-11
+
+### Changed
+
+- Running of tests using Docker and documentation for this.
+
 ## [1.1.3] - 2021-10-22
 
 ### Changed
