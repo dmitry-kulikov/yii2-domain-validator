@@ -190,9 +190,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $this->validator->enableIDN = true;
@@ -273,9 +270,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $validator = $this->validator;
@@ -342,9 +336,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $this->validator->enableIDN = true;
@@ -397,9 +388,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $this->validator->enableIDN = true;
@@ -436,9 +424,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $this->validator->enableIDN = true;
@@ -629,9 +614,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $this->validator->enableIDN = true;
@@ -695,9 +677,6 @@ class DomainValidatorTest extends TestCase
     {
         if (!function_exists('idn_to_ascii')) {
             $this->markTestSkipped('intl extension required.');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         Yii::$app->language = 'ru-RU';
@@ -744,9 +723,6 @@ class DomainValidatorTest extends TestCase
 
         if ($runkitFunctionName === null) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $runkitFunctionName('idn_to_ascii');
@@ -784,17 +760,11 @@ class DomainValidatorTest extends TestCase
 
         if ($runkitFunctionName === null) {
             $this->markTestSkipped('runkit extension required. runkit.internal_override should be set to "On".');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         // redefine dns_get_record to emit PHP Warning, which will be converted by Yii to yii\base\ErrorException
         if (!$runkitFunctionName('dns_get_record', '', 'trigger_error("Warning", E_USER_WARNING);')) {
             $this->markTestSkipped('Cannot redefine function "dns_get_record".');
-
-            /** @noinspection PhpUnreachableStatementInspection */
-            return;
         }
 
         $validator = $this->validator;
