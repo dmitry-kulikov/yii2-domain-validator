@@ -39,6 +39,16 @@ RUN apk update \
 # install dependencies using Composer
 RUN --mount=type=cache,id=composer,target=/root/.composer/cache,sharing=locked \
     composer global require --optimize-autoloader 'fxp/composer-asset-plugin:^1.4.6' \
+    \
+    # workarounds for Composer plugin fxp/composer-asset-plugin:
+    # 1) plugin may ask Git to clone repository using "git+ssh" protocol,
+    # for example git+ssh://git@github.com/garycourt/uri-js.git,
+    # but it requires SSH key linked with GitHub account which we have not in Docker;
+    && git config --global --add url.'https://'.insteadOf 'git+ssh://git@' \
+    # 2) plugin may ask Git to clone repository using "git" protocol,
+    # but the unencrypted "git" protocol is permanently disabled on GitHub,
+    # see https://github.blog/changelog/2022-03-15-removed-unencrypted-git-protocol-and-certain-ssh-keys.
+    && git config --global --add url.'https://github.com/'.insteadOf 'git@github.com:' \
     && composer update \
     && composer clear-cache
 
@@ -62,6 +72,16 @@ RUN apt-get update \
 # install dependencies using Composer
 RUN --mount=type=cache,id=composer,target=/root/.composer/cache,sharing=locked \
     composer global require --optimize-autoloader 'fxp/composer-asset-plugin:^1.4.6' \
+    \
+    # workarounds for Composer plugin fxp/composer-asset-plugin:
+    # 1) plugin may ask Git to clone repository using "git+ssh" protocol,
+    # for example git+ssh://git@github.com/garycourt/uri-js.git,
+    # but it requires SSH key linked with GitHub account which we have not in Docker;
+    && git config --global --add url.'https://'.insteadOf 'git+ssh://git@' \
+    # 2) plugin may ask Git to clone repository using "git" protocol,
+    # but the unencrypted "git" protocol is permanently disabled on GitHub,
+    # see https://github.blog/changelog/2022-03-15-removed-unencrypted-git-protocol-and-certain-ssh-keys.
+    && git config --global --add url.'https://github.com/'.insteadOf 'git@github.com:' \
     && composer update \
     && composer clear-cache
 
